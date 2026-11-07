@@ -1,0 +1,10 @@
+{
+  "id": "card.hero",
+  "kind": "hero",
+  "rev": 1,
+  "title": "The pass is open. The street is not.",
+  "body": {
+    "kicker": "Shell template",
+    "lede": "Cards live inboard as JSON. Pipes move them. Egress waits on a permit, and the dry dock does not own a socket."
+  }
+}

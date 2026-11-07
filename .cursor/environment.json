@@ -1,0 +1,4 @@
+{
+  "name": "Hull",
+  "install": "rustup toolchain install 1.99.1 --profile minimal --component rustfmt,clippy && rustup target add wasm32-unknown-unknown --toolchain 1.99.1 && npm ci"
+}
