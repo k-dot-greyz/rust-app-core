@@ -59,6 +59,10 @@ cp target/wasm32-unknown-unknown/release/hull.wasm wasm/hull.wasm
 node scripts/wasm-smoke.mjs
 ```
 
+## Shorthand
+
+`shorthand/` is a Solid 2 candidate for the hand-rolled island. It is not loaded by the hull, it adds no crate, and it opens no socket. Read `shorthand/CONTEXT.md` before generating a deck in that style. `shorthand/docs/handbook.md` holds the pins and the supply-chain split. Leave `astro add solid` alone until `@astrojs/solid-js@8` is what the resolver installs.
+
 ## Checks before you call it done
 
 - `cargo test` includes the night-canvas test: no `background: white`, no `#fff`, no `#ffffff`, no `color-scheme: light`.

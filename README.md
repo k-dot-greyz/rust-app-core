@@ -64,3 +64,7 @@ A cold start on the host plates a fresh service. The wasm instance keeps state u
 ## Modules
 
 Kinds are `hero`, `stat`, `list`, `form`, `note`, `gauge`, `media`. Steps are `append-list`, `inc-stat`, `set-gauge`, `airlock`. Both sets are closed and matched exhaustively. New behavior is a new file in that vocabulary, not a new interpreter.
+
+## Shorthand
+
+`shorthand/` is a Solid 2.0.3 candidate for the view `assets/island.js` hand-rolls. Same card kinds. The hull does not serve it, and `Cargo.toml` stays empty. `shorthand/CONTEXT.md` is the prompt. `shorthand/docs/handbook.md` is the companion. From that directory: `pnpm install`, `pnpm test`, `pnpm dev`. The dev server is its own port. It opens no socket.
