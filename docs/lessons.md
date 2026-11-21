@@ -38,7 +38,7 @@ Do not add `Loading`, `isPending`, or card inheritance because an older prompt m
 
 ## The schema twin
 
-`shorthand/src/cards/validate.ts` is a twin of `src/schema.rs`, with one known gap. The hull parser refuses exponent forms. `JSON.parse` turns `1e2` into the number `100` before the twin runs, so the twin can accept an integer the hull would refuse. Issue [#5](https://github.com/k-dot-greyz/rust-app-core/issues/5).
+`shorthand/src/cards/validate.ts` is a twin of `src/schema.rs`. `validateDeck` sees values `JSON.parse` already produced, so `1e2` is `100` and `1.0` is `1`. `validateDeckSource` scans the raw text first. A number token outside a string that contains `.`, `e`, or `E` is refused with "Integers are bare digits. Exponents are not integers." Feed raw JSON through that function. Do not expect `validateDeck` to recover an exponent from a parsed number.
 
 The ten sample cards in `modules/cards` must pass `validateDeck`. `shorthand/tests/hull-cards.test.ts` locks that. A hull card the twin rejects means the live poll will fault and hold the fixture forever.
 

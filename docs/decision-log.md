@@ -4,6 +4,8 @@
 
 The chat transcript stays in the chat. This file is the record that belongs in the tree.
 
+The original aim, kept as an attitude and not a deletion: this is a pure Rust core that happens to support an Astro island by design, and the shorthand is where the Solid 2.0.3 rules are implemented. The Vite deck, the hull proxy, and the wasm port stay. Nothing from those implementations was removed for the release candidate.
+
 ## This repo is a reference template
 
 Three uses, said in the README before the vocabulary:
@@ -110,3 +112,16 @@ Still refused, and still open: making `wasm/hull.wasm` the only schema checker, 
 The published page at `https://rust-core-app-test-solid2.apps.grok.bot` and the Origin repo `greyzxcursor/rust-core-app-test-solid2` are a third tree. This session did not republish them. Issue [#9](https://github.com/k-dot-greyz/rust-app-core/issues/9).
 
 A full chat dump was requested and then stopped. It is not in the tree. This log, `docs/lessons.md`, `shorthand/docs/handbook.md`, and `shorthand/docs/open-loops.md` are the durable notes.
+
+## Release candidate
+
+The open issues from this session were closed by a decision or by a small fix. No crate was added. No implementation was deleted.
+
+- The hull does not serve `shorthand/`, and it does not replace `assets/island.js`. The core stays Rust. The shorthand stays the island candidate you run beside it. Issue 2.
+- When the hull is up, the form posts the pipe and the fields on the card. When it is down, the form says the write stays on the page. `sysex-delta/1` stays in the crate and in `assets/island.js`. The shorthand polls `GET /api/view`. Issue 3.
+- `scripts/rc-check.sh` runs `cargo test` and the shorthand suite. `cargo test` does not call Node, so a Rust-only check of the core still has nothing to install. The night-canvas test already reads `shorthand/src/shell.css`. Issue 4.
+- `validateDeckSource` scans raw JSON before `JSON.parse`. A number token with `.` or `e` or `E` is refused with the hull sentence. Parsed objects are unchanged, because `1e2` is already `100` by then. Issue 5.
+- A shorthand media card plays a non-empty `/assets/` file the way the hull does, and keeps the dark plate when the file is missing or the source is refused. Issue 6.
+- The empty-title test names the DOM constraint and, after that attribute is removed, the store refusal. Issue 7.
+- Rechecked 21 Nov 2026: `@astrojs/solid-js` is still 7.1.6, peer `solid-js` ^1.9.13. `astro add solid` stays on hold. The Vite deck is the island boundary until @8 is what the resolver installs. Issue 8.
+- This GitHub repo is the reference. `https://rust-core-app-test-solid2.apps.grok.bot` is an earlier snapshot and was not republished. Issue 9.

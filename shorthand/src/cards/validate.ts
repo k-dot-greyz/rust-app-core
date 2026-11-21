@@ -14,6 +14,7 @@ import {
 
 const REV_MAX = 1_000_000_000;
 const DECK_MAX = 32;
+const BARE_DIGITS = "Integers are bare digits. Exponents are not integers.";
 
 export function issuesText(issues: Issue[]): string {
   return issues.map((issue) => `${issue.path}: ${issue.detail}`).join("; ");
@@ -50,6 +51,18 @@ export function validateDeck(value: unknown): DeckResult {
   }
   if (issues.length > 0) return { ok: false, issues };
   return { ok: true, cards };
+}
+
+export function validateDeckSource(text: string): DeckResult {
+  const issues = scanNumberLiterals(text);
+  if (issues.length > 0) return { ok: false, issues };
+  let value: unknown;
+  try {
+    value = JSON.parse(text);
+  } catch {
+    return { ok: false, issues: [{ path: "", detail: "invalid json" }] };
+  }
+  return validateDeck(value);
 }
 
 function validateCard(value: unknown, prefix: string): { card?: Card; issues: Issue[] } {
@@ -463,4 +476,168 @@ function isDigit(char: string): boolean {
 
 function join(path: string, ...keys: string[]): string {
   return [path, ...keys].filter((part) => part.length > 0).join("/");
+}
+
+type JsonFrame = { kind: "array"; index: number } | { kind: "object"; key: string | null };
+
+function scanNumberLiterals(text: string): Issue[] {
+  const issues: Issue[] = [];
+  const stack: JsonFrame[] = [];
+  let index = 0;
+
+  while (index < text.length) {
+    const char = text[index];
+    if (char === undefined) break;
+    if (isJsonSpace(char)) {
+      index += 1;
+      continue;
+    }
+    if (char === "{") {
+      stack.push({ kind: "object", key: null });
+      index += 1;
+      continue;
+    }
+    if (char === "[") {
+      stack.push({ kind: "array", index: 0 });
+      index += 1;
+      continue;
+    }
+    if (char === "}" || char === "]") {
+      stack.pop();
+      finishJsonValue(stack);
+      index += 1;
+      continue;
+    }
+    if (char === "," || char === ":") {
+      index += 1;
+      continue;
+    }
+    if (char === '"') {
+      const read = readJsonString(text, index);
+      if (!read) break;
+      index = read.next;
+      const parent = stack[stack.length - 1];
+      if (parent?.kind === "object" && parent.key === null) parent.key = read.value;
+      else finishJsonValue(stack);
+      continue;
+    }
+    if (char === "-" || isDigit(char)) {
+      const start = index;
+      index += 1;
+      while (index < text.length && isNumberPart(text[index])) index += 1;
+      const token = text.slice(start, index);
+      if (token.includes(".") || token.includes("e") || token.includes("E")) {
+        issues.push({ path: jsonPointer(stack), detail: BARE_DIGITS });
+      }
+      finishJsonValue(stack);
+      continue;
+    }
+    const literal = readJsonLiteral(text, index);
+    if (literal !== null) {
+      index = literal;
+      finishJsonValue(stack);
+      continue;
+    }
+    index += 1;
+  }
+
+  return issues;
+}
+
+function finishJsonValue(stack: JsonFrame[]): void {
+  const parent = stack[stack.length - 1];
+  if (!parent) return;
+  if (parent.kind === "array") parent.index += 1;
+  else parent.key = null;
+}
+
+function jsonPointer(stack: readonly JsonFrame[]): string {
+  let path = "";
+  for (const frame of stack) {
+    if (frame.kind === "array") path += `/${frame.index}`;
+    else if (frame.key !== null) path += `/${frame.key}`;
+  }
+  return path;
+}
+
+function isJsonSpace(char: string): boolean {
+  return char === " " || char === "\n" || char === "\r" || char === "\t";
+}
+
+function isNumberPart(char: string | undefined): boolean {
+  return (
+    char !== undefined &&
+    (isDigit(char) || char === "." || char === "e" || char === "E" || char === "+" || char === "-")
+  );
+}
+
+function readJsonLiteral(text: string, index: number): number | null {
+  for (const word of ["true", "false", "null"]) {
+    if (!text.startsWith(word, index)) continue;
+    const after = text[index + word.length];
+    if (after !== undefined && isLiteralTail(after)) continue;
+    return index + word.length;
+  }
+  return null;
+}
+
+function isLiteralTail(char: string): boolean {
+  return isDigit(char) || (char >= "a" && char <= "z") || (char >= "A" && char <= "Z") || char === "_";
+}
+
+function readJsonString(text: string, index: number): { value: string; next: number } | null {
+  let cursor = index + 1;
+  let value = "";
+  while (cursor < text.length) {
+    const char = text[cursor];
+    if (char === undefined) return null;
+    if (char === '"') return { value, next: cursor + 1 };
+    if (char !== "\\") {
+      value += char;
+      cursor += 1;
+      continue;
+    }
+    const escaped = text[cursor + 1];
+    if (escaped === undefined) return null;
+    if (escaped === "u") {
+      const hex = text.slice(cursor + 2, cursor + 6);
+      if (!isHex4(hex)) {
+        value += "\\u";
+        cursor += 2;
+        continue;
+      }
+      value += String.fromCharCode(Number.parseInt(hex, 16));
+      cursor += 6;
+      continue;
+    }
+    value += decodeEscape(escaped);
+    cursor += 2;
+  }
+  return null;
+}
+
+function isHex4(text: string): boolean {
+  if (text.length !== 4) return false;
+  for (const char of text) {
+    const hex = (char >= "0" && char <= "9") || (char >= "a" && char <= "f") || (char >= "A" && char <= "F");
+    if (!hex) return false;
+  }
+  return true;
+}
+
+function decodeEscape(char: string): string {
+  switch (char) {
+    case "b":
+      return "\b";
+    case "f":
+      return "\f";
+    case "n":
+      return "\n";
+    case "r":
+      return "\r";
+    case "t":
+      return "\t";
+    default:
+      return char;
+  }
 }

@@ -103,6 +103,12 @@ Kinds are `hero`, `stat`, `list`, `form`, `note`, `gauge`, `media`. Steps are `a
 
 `shorthand/` is a Solid 2.0.3 candidate for the view `assets/island.js` hand-rolls. Same card kinds. The hull does not serve that directory, and `Cargo.toml` stays empty. `pnpm dev` prefers `http://127.0.0.1:4483` and proxies `/api` to the hull at `http://127.0.0.1:4471`. Set `HULL_ORIGIN` to point the proxy somewhere else. When the hull is up, the page takes its deck and posts the form card's pipe. When the hull is down, the page keeps the fixture deck and files a line locally. `shorthand/CONTEXT.md` is the prompt. `shorthand/docs/handbook.md` is the companion. From that directory: `pnpm install`, `pnpm test`, `pnpm dev`. A busy port walks to the next free one, and Vite prints the URL that opened. `HOST=0.0.0.0` opens that dev server on every interface, with no login. That is a listening socket on the machine running Vite. The hull does not open outbound sockets. There is no TLS plugin.
 
+## Release check
+
+`scripts/rc-check.sh` runs `cargo test`, then `pnpm test` and `pnpm typecheck` in `shorthand/`. `cargo test` stays the Rust suite and does not call Node. The hull does not serve the shorthand, and `assets/island.js` stays the view on the pass. That is the release candidate: a pure Rust core, with the Solid 2 deck as the island candidate beside it.
+
+The reference is this repository. `https://rust-core-app-test-solid2.apps.grok.bot` is an earlier snapshot. This candidate does not republish that page.
+
 ## Session record
 
-`docs/decision-log.md` is the decision record for the 21 Nov 2026 session. `docs/lessons.md` is what a later pass should keep. Open work is `shorthand/docs/open-loops.md`.
+`docs/decision-log.md` is the decision record for the 21 Nov 2026 session. `docs/lessons.md` is what a later pass should keep. `shorthand/docs/open-loops.md` lists what the candidate decided and what it still watches.

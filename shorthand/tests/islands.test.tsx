@@ -102,7 +102,7 @@ describe("both islands on one store", () => {
     expect(document.querySelectorAll("article")).toHaveLength(9);
   });
 
-  it("files a trace line from the form and ignores an empty title", () => {
+  it("files a trace line from the form", () => {
     const plate = document.getElementById("card.plate");
     const form = plate?.querySelector("form");
     if (!(form instanceof HTMLFormElement)) throw new Error("missing form");
@@ -129,13 +129,35 @@ describe("both islands on one store", () => {
     expect(detail.value).toBe("");
     expect(trace()?.textContent).toContain("Still local.");
     expect(document.querySelector('[role="alert"]')).toBeNull();
+  });
 
+  it("DOM layer: the title input has the required attribute, the browser constraint", () => {
+    const title = document.querySelector('[id="card.plate"] input[name="title"]');
+    if (!(title instanceof HTMLInputElement)) throw new Error("missing fields");
+    expect(title.hasAttribute("required")).toBe(true);
+  });
+
+  it("store layer refuses an empty title after the DOM required constraint is removed", () => {
+    const form = document.querySelector('[id="card.plate"] form');
+    if (!(form instanceof HTMLFormElement)) throw new Error("missing form");
+    const title = form.querySelector('input[name="title"]');
+    const detail = form.querySelector('input[name="detail"]');
+    if (!(title instanceof HTMLInputElement) || !(detail instanceof HTMLInputElement)) throw new Error("missing fields");
+
+    const trace = () => document.getElementById("card.trace");
+    const before = trace()?.querySelectorAll("li").length;
+    if (before === undefined) throw new Error("missing trace");
+    title.removeAttribute("required");
     title.value = "";
     detail.value = "no title";
     form.requestSubmit();
     flush();
+
+    expect(document.querySelector('[role="alert"]')?.textContent).toContain("length");
+    expect(trace()?.querySelectorAll("li")).toHaveLength(before);
     expect(trace()?.textContent).not.toContain("no title");
-    expect(trace()?.querySelectorAll("li")).toHaveLength(2);
+    expect(title.value).toBe("");
+    expect(detail.value).toBe("no title");
   });
 
   it("keeps the form input when the trace is full", () => {

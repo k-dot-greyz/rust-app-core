@@ -54,7 +54,13 @@ Two ports, one dispatch:
 - Local: `cargo run` binds `TcpListener` in `src/server.rs`. Preferred port **4471**, on `127.0.0.1`. The scheme is `http` because the bytes stay on the machine. A taken port, or `PORT=0`, binds a port the OS assigns and the process prints that URL. `HOST=0.0.0.0` is the opt-in that listens on every interface, with no login.
 - Hosted: `app/[[...path]]/route.js` loads `wasm/hull.wasm` through `lib/hull.mjs` and calls `hull_handle`. The host terminates TLS. Smoke requests use `https://hull.local`. Dispatch reads the path, not the scheme. Next is the port. The crate is the product. One wasm instance per isolate; a cold start plates a fresh service.
 
-A URL that is not loopback is `https://`, except the denial fixtures in the probe table above. Do not add a TLS crate. Do not ship a self-signed certificate. The shorthand prefers port **4483** and walks forward when that port is taken. It does not terminate TLS either. Its dev server proxies `/api` to `http://127.0.0.1:4471` (`HULL_ORIGIN` overrides that). The browser stays on the shorthand origin, so `Sec-Fetch-Site` stays `same-origin`. When that hull is down, the shorthand keeps the last good deck.
+A URL that is not loopback is `https://`, except the denial fixtures in the probe table above. Do not add a TLS crate. Do not ship a self-signed certificate. The shorthand prefers port **4483** and walks forward when that port is taken. It does not terminate TLS either. Its dev server proxies `/api` to `http://127.0.0.1:4471` (`HULL_ORIGIN` overrides that). The browser stays on the shorthand origin, so `Sec-Fetch-Site` stays `same-origin`. When that hull is down, the shorthand keeps the last good deck and the form says the write stays on the page. When the hull is up, the form posts the pipe named on the card.
+
+## Release candidate
+
+The hull is the product. It is a pure Rust core: empty `[dependencies]`, its own HTTP, JSON, schema, pipes, airlock, and delta. It is shaped so an Astro island can sit on the server-rendered document. The Solid 2 shorthand is that island's candidate, running in Vite until `@astrojs/solid-js@8` is what the resolver installs. Rechecked 21 Nov 2026: npm still served `@astrojs/solid-js@7.1.6`, peer `solid-js` ^1.9.13. Do not run `astro add solid` on that pin.
+
+This candidate does not replace `assets/island.js`. The hull does not serve `shorthand/`. Sparse `sysex-delta/1` stays in the crate and in `assets/island.js`. The shorthand polls `GET /api/view` and posts a pipe. That split is the release decision, and it keeps the Rust core free of a Node build. `scripts/rc-check.sh` is the check that runs both suites. The GitHub repo is the reference. The page at `https://rust-core-app-test-solid2.apps.grok.bot` is an earlier snapshot and is not updated by this candidate.
 
 ## Sample pass
 

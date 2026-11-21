@@ -1,6 +1,6 @@
 # Open loops
 
-Status on 21 Nov 2026, after the review fixes and the orientation pass on this branch. Closed means the item is done here. Open means it is still not this release.
+Status on 21 Nov 2026, release candidate. Closed means the item is decided or done. The watch list is not a promise to change the core.
 
 ## Closed
 
@@ -14,28 +14,27 @@ Status on 21 Nov 2026, after the review fixes and the orientation pass on this b
 - README, SPEC, the shorthand README, and the first screen of each page define the short names and say what to do next.
 - The agent note points at GitHub `k-dot-greyz/rust-app-core`. Origin `greyzxcursor/rust-web-scaffold` is the earlier scaffold.
 
-## Still open
+- The release candidate keeps the hull as the Rust core and the shorthand as the island beside it. The hull does not serve `shorthand/`, and it does not replace `assets/island.js`. `Cargo.toml` stays empty.
+- When the hull is up, the form posts the pipe on the card and says so. When it is down, the form says the write stays on the page. `sysex-delta/1` stays in the crate and in `assets/island.js`. The shorthand polls `GET /api/view`.
+- `scripts/rc-check.sh` runs `cargo test` and the shorthand suite. `cargo test` does not call Node. The night-canvas test reads `shorthand/src/shell.css`.
+- `validateDeckSource` refuses exponent and fractional number tokens in raw JSON. `validateDeck` still sees parsed values.
+- A local `/assets/` media src plays. An empty or refused src stays on the dark plate.
+- The empty-title tests name the DOM `required` attribute and the store refusal.
+- Astro's Solid adapter was rechecked 21 Nov 2026. npm still returned `@astrojs/solid-js@7.1.6`, peer `solid-js` ^1.9.13. `astro add solid` stays on hold.
+- This GitHub repo is the reference. The grok page is an earlier snapshot and was not republished.
 
-The hull does not serve `shorthand/`. `assets/island.js` is still the view the pass loads. `Cargo.toml` stays empty. `tasks.md` keeps the shorthand out of the hull's done-when. Replacing the island is a later release.
+## Watch
 
-`pnpm dev` proxies `/api` to the hull and polls `GET /api/view`. The form posts the pipe and the field names on the form card. When the hull is down, filing a line still appends to the local `card.trace`. `load()` is still a full payload. The page does not speak `sysex-delta/1` itself. The hull does. A static `vite build` has no proxy, so a published shorthand host has to provide `/api` or the page stays on the fixture.
+These are accepted for the candidate. They are not open defects.
 
-The hull's Next.js port still serves `wasm/hull.wasm`. The shorthand is a separate Vite app. Those two front ends are not one app. The TypeScript twin still checks the sample cards, and it is not yet the wasm checker. The exponent-integer gap below is the remaining schema drift.
+`pnpm dev` proxies `/api`. A static `vite build` has no proxy, so a published shorthand host has to provide `/api` or the page stays on the fixture.
 
-`cargo test` does not run `pnpm test`. Nothing in this repo's automation runs the shorthand suite. The night-canvas check now also reads `shorthand/src/shell.css`.
+The hull's Next.js port still serves `wasm/hull.wasm`. The shorthand is a separate Vite app. The TypeScript twin checks the sample cards and the raw JSON integers. It is not the wasm checker.
 
-The TypeScript checker sees the number `JSON.parse` already produced. The hull parser refuses exponent forms. An exponent can become an integer before this twin checks it.
+The shorthand mounts are empty until the script runs. The `noscript` block says so. That is the page without JavaScript.
 
-The shorthand mounts are empty until the script runs. Pretext is filled by an effect. The `noscript` block says so and points at Hull on port 4471.
+Playwright stays out. Clipboard success, paint counts on fields the story does not change, viewport width, and favicon are still untested here. happy-dom covers the two-island pass.
 
-The media shell paints the fallback plate and the caption. A non-empty local `src` is allowed by the validator and is not played. The fixture source is empty on purpose. The hull page does play a local `/assets/` file and falls back when that file fails.
-
-Playwright stays out so install does not download a browser. The two-island pass runs in happy-dom. Clipboard success, paint counts on fields the story does not change, viewport width, and favicon are still untested here. The empty-title case can pass because the browser blocks the submit or because the store rejects a blank title. The test does not say which layer ran.
-
-Direct runtime packages are `solid-js@2.0.3` and `@solidjs/web@2.0.3`. The install also fetches `@solidjs/signals`, `seroval`, `seroval-plugins`, and `csstype`. A client chunk from the earlier pass had no `seroval` string. A sandbox install still downloads it. `happy-dom@21.0.4` brings `ws`. `npm install` is not the path. npm 10.9.9's arborist crashed on Vitest's peer set. The repo uses pnpm.
-
-On 21 Nov 2026, npm's `@astrojs/solid-js` was 7.1.6 and peers `solid-js` 1.9. Solid 2 support was Astro pull request 18783, `@astrojs/solid-js@8`. Leave `astro add solid` alone until the resolver installs @8. The pin in `CONTEXT.md` moves together with the handbook and the test.
-
-The published page and the Origin repo `greyzxcursor/rust-core-app-test-solid2` are a third tree. This branch does not update that page. A later edit here does not land there.
+Direct runtime packages are `solid-js@2.0.3` and `@solidjs/web@2.0.3`. The install also fetches `@solidjs/signals`, `seroval`, `seroval-plugins`, and `csstype`. `happy-dom@21.0.4` brings `ws`. pnpm is the installer. npm 10.9.9's arborist crashed on Vitest's peer set.
 
 Header, skip link, mount labels, and the inspector hints live outside the cards. That frame is the manual. The cards stay the data.

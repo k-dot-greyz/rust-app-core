@@ -1,7 +1,8 @@
 import { dynamic } from "@solidjs/web";
-import { For, Show } from "solid-js";
+import { createSignal, For, Show } from "solid-js";
 import { bridge } from "../bridge/deck-store.ts";
 import { assertNever, type Card } from "../cards/types.ts";
+import { safeMediaSrc } from "../cards/validate.ts";
 import { Field } from "./Field.tsx";
 
 const STEPS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -128,11 +129,70 @@ function NoteCard(props: { card: Card }) {
 }
 
 function MediaCard(props: { card: Card }) {
+  const [dark, setDark] = createSignal(false);
+  const reveal = () => setDark(true);
+  const playableSrc = (): string | undefined => {
+    if (props.card.kind !== "media") return undefined;
+    const src = props.card.body.src;
+    if (typeof src !== "string" || src.length === 0 || !safeMediaSrc(src)) return undefined;
+    return src;
+  };
   return (
     <Show when={props.card.kind === "media" ? props.card : undefined}>
       {(card) => (
         <figure class="bay">
-          <div class="bay-fallback">{card().body.fallback}</div>
+          <Show when={playableSrc()}>
+            {(src) => (
+              <>
+                <Show when={card().body.medium === "audio"}>
+                  <audio
+                    controls
+                    preload="none"
+                    src={src()}
+                    hidden={dark()}
+                    onError={reveal}
+                    ref={(el) => {
+                      if (el.error) reveal();
+                    }}
+                  >
+                    {card().body.fallback}
+                  </audio>
+                </Show>
+                <Show when={card().body.medium === "frame"}>
+                  <iframe
+                    title={card().title}
+                    sandbox=""
+                    referrerpolicy="no-referrer"
+                    src={src()}
+                    hidden={dark()}
+                    onError={reveal}
+                  />
+                </Show>
+                <Show when={card().body.medium !== "audio" && card().body.medium !== "frame"}>
+                  <video
+                    controls
+                    playsinline
+                    preload="none"
+                    src={src()}
+                    hidden={dark()}
+                    onError={reveal}
+                    ref={(el) => {
+                      if (el.error) reveal();
+                    }}
+                  >
+                    {card().body.fallback}
+                  </video>
+                </Show>
+              </>
+            )}
+          </Show>
+          <div
+            class="bay-fallback"
+            hidden={playableSrc() !== undefined && !dark()}
+            data-state={playableSrc() === undefined || dark() ? "dark" : undefined}
+          >
+            {card().body.fallback}
+          </div>
           <figcaption>{card().body.caption}</figcaption>
         </figure>
       )}
@@ -166,6 +226,11 @@ function FormCard(props: { card: Card }) {
           }}
         >
           <p class="pipe">{card().body.pipe}</p>
+          <p class="hint">
+            {bridge.deck.connected
+              ? "This write goes to the hull."
+              : "Hull is down. This write stays on the page."}
+          </p>
           <For each={card().body.fields}>
             {(field) => (
               <label>
