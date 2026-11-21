@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { freshDeck } from "../src/cards/deck.ts";
 import { toPretext } from "../src/cards/pretext.ts";
-import { issuesText, validateDeck } from "../src/cards/validate.ts";
+import { issuesText, validateDeck, validateDeckSource } from "../src/cards/validate.ts";
 
 describe("hull card contract", () => {
   it("accepts the fixture deck without rewriting a field", () => {
@@ -81,6 +81,71 @@ describe("hull card contract", () => {
   });
 });
 
+describe("raw deck source", () => {
+  const hero = (rev: string, lede = "A night shift.") =>
+    `[{"id":"card.hero","kind":"hero","rev":${rev},"title":"Pass","body":{"lede":"${lede}"}}]`;
+
+  it("accepts a bare integer rev", () => {
+    const result = validateDeckSource(hero("1"));
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.cards[0]?.rev).toBe(1);
+  });
+
+  it.each(["1e2", "1E2", "1e+2", "1.0"])("refuses rev literal %s", (rev) => {
+    const result = validateDeckSource(hero(rev));
+    expect(result).toEqual({
+      ok: false,
+      issues: [{ path: "/0/rev", detail: "Integers are bare digits. Exponents are not integers." }],
+    });
+  });
+
+  it("does not treat 1e2 inside a lede as a number", () => {
+    const plain = validateDeckSource(hero("1", "holds 1e2"));
+    expect(plain.ok).toBe(true);
+    if (plain.ok && plain.cards[0]?.kind === "hero") expect(plain.cards[0].body.lede).toBe("holds 1e2");
+
+    const quoted = validateDeckSource(hero("1", "say \\\"1e2\\\""));
+    expect(quoted.ok).toBe(true);
+    if (quoted.ok && quoted.cards[0]?.kind === "hero") expect(quoted.cards[0].body.lede).toBe('say "1e2"');
+  });
+
+  it("accepts a leading minus on a bare integer", () => {
+    const text =
+      '[{"id":"card.roots","kind":"stat","rev":1,"title":"Count","body":{"label":"Islands","value":-7,"unit":"","hint":""}}]';
+    const result = validateDeckSource(text);
+    expect(result.ok).toBe(true);
+    if (result.ok && result.cards[0]?.kind === "stat") expect(result.cards[0].body.value).toBe(-7);
+  });
+
+  it("points at every number an exponent or a fraction wrote", () => {
+    const text =
+      '[{"id":"card.roots","kind":"stat","rev":1e2,"title":"Count","body":{"label":"Islands","value":1.0,"unit":"","hint":""}}]';
+    expect(validateDeckSource(text)).toEqual({
+      ok: false,
+      issues: [
+        { path: "/0/rev", detail: "Integers are bare digits. Exponents are not integers." },
+        { path: "/0/body/value", detail: "Integers are bare digits. Exponents are not integers." },
+      ],
+    });
+  });
+
+  it("still accepts an object deck, including a parsed 100", () => {
+    expect(validateDeck(freshDeck()).ok).toBe(true);
+    const result = validateDeck([
+      { id: "card.hero", kind: "hero", rev: 100, title: "Pass", body: { lede: "Parsed 100 stays an integer." } },
+    ]);
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.cards[0]?.rev).toBe(100);
+  });
+
+  it("returns invalid json when the source is not JSON", () => {
+    expect(validateDeckSource('{"rev":')).toEqual({
+      ok: false,
+      issues: [{ path: "", detail: "invalid json" }],
+    });
+  });
+});
+
 describe("pretext", () => {
   it("prints the gauge and the bay plate as text", () => {
     const text = toPretext(freshDeck());
@@ -97,6 +162,8 @@ describe("shorthand prompt", () => {
     expect(prompt).toContain("solid-js@2.0.3");
     expect(prompt).toContain("@astrojs/solid-js@8");
     expect(prompt).toContain("7.1.6");
+    expect(prompt).toContain("^1.9.13");
+    expect(prompt).toContain("Rechecked 21 Nov 2026");
     expect(prompt).toContain("solid-js/store");
     expect(prompt).toContain("@solidjs/web");
   });
