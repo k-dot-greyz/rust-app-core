@@ -162,7 +162,7 @@ fn read_asset(name: &str, embedded: &str) -> String {
 }
 
 fn header(html: &mut Markup, hull: &Hull, surface: &str) {
-    html.raw("<header class=\"mast\"><div><p class=\"mark\">Hull</p><p class=\"sub\">night shift · rust 1.99.1 · zero crates. Reference template: send a plate, then the four probes. Nothing is sent.</p>");
+    html.raw("<header class=\"mast\"><div><p class=\"mark\">Hull</p><p class=\"sub\">night shift · rust ≥1.99.1 · zero crates. Reference template: send a plate, then the four probes. Nothing is sent.</p>");
     html.raw("<nav class=\"surfaces\" aria-label=\"Presentation\"><a data-surface-link=\"deck\" href=\"?surface=deck\"");
     if surface == "deck" {
         html.raw(" aria-current=\"page\"");

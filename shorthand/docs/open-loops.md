@@ -16,7 +16,7 @@ Status on 21 Nov 2026, release candidate. Closed means the item is decided or do
 
 - The release candidate keeps the hull as the Rust core and the shorthand as the island beside it. The hull does not serve `shorthand/`, and it does not replace `assets/island.js`. `Cargo.toml` stays empty.
 - When the hull is up, the form posts the pipe on the card and says so. When it is down, the form says the write stays on the page. `sysex-delta/1` stays in the crate and in `assets/island.js`. The shorthand polls `GET /api/view`.
-- `scripts/rc-check.sh` runs `cargo test` and the shorthand suite. `cargo test` does not call Node. The night-canvas test reads `shorthand/src/shell.css`.
+- `scripts/rc-check.sh` runs `cargo test` and the shorthand suite. `cargo test` does not call Node. GitHub runs that script on pull requests and on `main`. The night-canvas test reads `shorthand/src/shell.css`.
 - `validateDeckSource` refuses exponent and fractional number tokens in raw JSON. `validateDeck` still sees parsed values.
 - A local `/assets/` media src plays. An empty or refused src stays on the dark plate.
 - The empty-title tests name the DOM `required` attribute and the store refusal.

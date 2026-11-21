@@ -40,7 +40,7 @@ The hull already renders the document and serves cards. This page is the island 
 
 Node 22.12 or newer. pnpm, because npm 10.9.9's arborist crashed on Vitest's peer set (`edgesOut`).
 
-Runtime dependencies are `solid-js` and `@solidjs/web`, pinned exact. They publish compiled JavaScript and type declarations. This repo authors TypeScript only. Vite, Vitest, TypeScript, and the Solid compiler are the install weight, and they stay out of the browser bundle. `happy-dom` is the test DOM. The reasoning is in `docs/handbook.md`.
+Runtime dependencies are `solid-js` and `@solidjs/web`, floored at 2.0.3. The lockfile records the resolution. They publish compiled JavaScript and type declarations. This repo authors TypeScript only. Vite, Vitest, TypeScript, and the Solid compiler are the install weight, and they stay out of the browser bundle. `happy-dom` is the test DOM. The reasoning is in `docs/handbook.md`.
 
 ```bash
 pnpm install

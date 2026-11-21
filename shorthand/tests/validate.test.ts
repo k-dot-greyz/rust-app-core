@@ -158,8 +158,9 @@ describe("pretext", () => {
 describe("shorthand prompt", () => {
   const prompt = readFileSync(new URL("../CONTEXT.md", import.meta.url), "utf8");
 
-  it("pins Solid 2 and names the adapter that is not the npm latest", () => {
+  it("names the Solid 2 floor and the adapter that is not the npm latest", () => {
     expect(prompt).toContain("solid-js@2.0.3");
+    expect(prompt).toContain(">=");
     expect(prompt).toContain("@astrojs/solid-js@8");
     expect(prompt).toContain("7.1.6");
     expect(prompt).toContain("^1.9.13");

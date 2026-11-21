@@ -8,8 +8,8 @@
     "smoke": "node scripts/wasm-smoke.mjs"
   },
   "dependencies": {
-    "next": "16.4.5",
-    "react": "19.3.1",
-    "react-dom": "19.3.1"
+    "next": ">=16.4.5",
+    "react": ">=19.3.1",
+    "react-dom": ">=19.3.1"
   }
 }

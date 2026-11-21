@@ -34,10 +34,10 @@ Agents pick this up from `agent-flow/references/cursor/rust-app-core.md`. That f
 
 ## Quickstart
 
-Rust **1.99.1** is pinned in `rust-toolchain.toml`. No crates.
+Rust **1.99.1** is the floor (`Cargo.toml` `rust-version`). `rust-toolchain.toml` tracks stable, and `scripts/rc-check.sh` refuses an older compiler. No crates.
 
 ```bash
-rustup toolchain install 1.99.1 --profile minimal --component rustfmt,clippy
+rustup toolchain install stable --profile minimal --component rustfmt,clippy
 rustup target add wasm32-unknown-unknown
 cargo test
 cargo run
@@ -105,7 +105,7 @@ Kinds are `hero`, `stat`, `list`, `form`, `note`, `gauge`, `media`. Steps are `a
 
 ## Release check
 
-`scripts/rc-check.sh` runs `cargo test`, then `pnpm test` and `pnpm typecheck` in `shorthand/`. `cargo test` stays the Rust suite and does not call Node. The hull does not serve the shorthand, and `assets/island.js` stays the view on the pass. That is the release candidate: a pure Rust core, with the Solid 2 deck as the island candidate beside it.
+`scripts/rc-check.sh` runs `cargo test`, then `pnpm test` and `pnpm typecheck` in `shorthand/`. `cargo test` stays the Rust suite and does not call Node. GitHub runs that script on pull requests and on `main` (`.github/workflows/rc.yml`). The hull does not serve the shorthand, and `assets/island.js` stays the view on the pass. That is the release candidate: a pure Rust core, with the Solid 2 deck as the island candidate beside it.
 
 The reference is this repository. `https://rust-core-app-test-solid2.apps.grok.bot` is an earlier snapshot. This candidate does not republish that page.
 

@@ -12,15 +12,15 @@ Source of truth: GitHub `k-dot-greyz/rust-app-core`. Origin `greyzxcursor/rust-w
 
 ## Toolchain
 
-Pinned in `rust-toolchain.toml`.
+`rust-toolchain.toml` tracks stable. `Cargo.toml` `rust-version` is the floor.
 
-- Rust **1.99.1**, edition 2024
+- Rust **1.99.1** or newer, edition 2024
 - Components: `rustfmt`, `clippy`
 - Target, only for the hosted port: `wasm32-unknown-unknown`
 - `[dependencies]` in `Cargo.toml` stays empty
 
 ```bash
-rustup toolchain install 1.99.1 --profile minimal --component rustfmt,clippy
+rustup toolchain install stable --profile minimal --component rustfmt,clippy
 rustup target add wasm32-unknown-unknown
 cargo test
 cargo clippy --all-targets -- -D warnings
