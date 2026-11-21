@@ -34,7 +34,7 @@ pnpm test
 pnpm dev
 ```
 
-The dev server listens on port **4483**. `?surface=pretext` is the text surface. The header toggle switches it.
+`pnpm dev` and `pnpm preview` listen on `127.0.0.1:4483`. Set `HOST=0.0.0.0` when a sandbox has to reach the dev server. That opens a listening socket on every interface, with no login. It is not an outbound socket, and the hull's airlock is a separate rule. `?surface=pretext` is the text surface. The header toggle switches it. The skip link follows the visible surface.
 
 ```bash
 pnpm typecheck

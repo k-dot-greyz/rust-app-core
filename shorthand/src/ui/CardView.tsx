@@ -165,10 +165,9 @@ function FormCard(props: { card: Card }) {
                   name={field.name}
                   type="text"
                   required={field.required}
-                  maxlength={field.name === "title" ? undefined : field.max}
                   onInput={(event) => {
-                    if (field.name !== "title") return;
                     const input = event.currentTarget;
+                    if (!(input instanceof HTMLInputElement)) return;
                     const points = [...input.value];
                     if (points.length > field.max) input.value = points.slice(0, field.max).join("");
                   }}

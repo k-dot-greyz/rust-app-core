@@ -108,10 +108,14 @@ describe("both islands on one store", () => {
     if (!(title instanceof HTMLInputElement) || !(detail instanceof HTMLInputElement)) throw new Error("missing fields");
 
     expect(title.hasAttribute("maxlength")).toBe(false);
+    expect(detail.hasAttribute("maxlength")).toBe(false);
     const line = "🚀".repeat(48);
     title.value = `${line}🚀`;
     title.dispatchEvent(new Event("input", { bubbles: true }));
     expect(title.value).toBe(line);
+    detail.value = `${"🚀".repeat(80)}🚀`;
+    detail.dispatchEvent(new Event("input", { bubbles: true }));
+    expect([...detail.value].length).toBe(80);
     detail.value = "Still local.";
     form.requestSubmit();
     flush();

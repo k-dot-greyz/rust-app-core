@@ -15,7 +15,7 @@ function setSurface(surface: "deck" | "pretext") {
   }
   if (skip instanceof HTMLAnchorElement) {
     skip.href = pretext ? "#pretext" : "#deck-root";
-    skip.textContent = pretext ? "Skip to Pretext" : "Skip to the deck";
+    skip.textContent = pretext ? chrome.skipToPretext : chrome.skipToDeck;
   }
 }
 

@@ -9,6 +9,7 @@
   --copper-ink: #1a120e;
   --sea: #8fb9b0;
   --deny: #e08a7a;
+
   font-family: "Iowan Old Style", Palatino, "Palatino Linotype", Georgia, serif;
   background: var(--void);
   color: var(--ink);
@@ -109,7 +110,7 @@ figcaption,
 }
 
 .root-tag {
-  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.75rem;
   margin-bottom: 0.6rem;
 }
@@ -203,7 +204,7 @@ input[type="range"] {
 .field-meta {
   margin-left: 0.45rem;
   color: var(--copper);
-  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.8rem;
 }
 
@@ -275,7 +276,7 @@ input[type="range"] {
   gap: 0.4rem;
   border: 1px solid var(--line);
   padding: 0.25rem 0.5rem;
-  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.78rem;
 }
 
@@ -294,7 +295,7 @@ input[type="range"] {
 
 pre {
   white-space: pre-wrap;
-  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 0.78rem;
   line-height: 1.45;
   background: var(--void);
@@ -346,7 +347,7 @@ a {
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
   white-space: nowrap;
   border: 0;
 }

@@ -13,6 +13,7 @@ describe("deck bridge", () => {
     const gauge = bridge.deck.cards.find((card) => card.id === "card.gauge");
     expect(gauge?.kind === "gauge" && gauge.body.value).toBe(81);
     bridge.setGauge("card.gauge", Number.NaN);
+    bridge.setGauge("card.gauge", Number.POSITIVE_INFINITY);
     flush();
     const unchanged = bridge.deck.cards.find((card) => card.id === "card.gauge");
     expect(unchanged?.kind === "gauge" && unchanged.body.value).toBe(81);

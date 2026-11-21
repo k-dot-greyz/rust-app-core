@@ -1,5 +1,7 @@
 export const chrome = {
   select: "Select",
+  skipToDeck: "Skip to the deck",
+  skipToPretext: "Skip to Pretext",
   emptyTape: "The tape is empty.",
   copy: "Copy the prompt",
   copied: "On the clipboard.",

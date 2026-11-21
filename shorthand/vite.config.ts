@@ -12,8 +12,8 @@ export default defineConfig(({ mode }) => ({
       dev: mode === "test" ? false : undefined,
     }),
   ],
-  server: { host: "0.0.0.0", port: 4483, strictPort: true },
-  preview: { host: "0.0.0.0", port: 4483, strictPort: true },
+  server: { host: process.env.HOST ?? "127.0.0.1", port: 4483, strictPort: true },
+  preview: { host: process.env.HOST ?? "127.0.0.1", port: 4483, strictPort: true },
   test: {
     environment: "node",
     include: ["tests/**/*.test.ts", "tests/**/*.test.tsx"],

@@ -64,7 +64,7 @@ So a sandbox install downloads packages the page never fetches. That is real cos
 
 **Control we actually have.** Exact versions on the two runtime packages and on happy-dom. A lockfile for the rest. `tests/supply.test.ts` fails if a runtime dependency appears, if Playwright or Astro or React shows up in devDependencies, or if `src/` grows a `.js` file or a Solid 1 import. Review the lockfile diff when the toolchain moves. Do not `pnpm update` on a whim.
 
-**Open pin from review.** The dev and preview scripts, and `vite.config.ts`, bind `0.0.0.0` so a sandbox can reach the server. That listens on every interface with no login. It is a dev-server setting. The published site is the static build and does not run Vite. Tighten the bind to localhost before this repo is used as a long-lived dev environment on a shared machine.
+**Dev server bind.** `pnpm dev` and `pnpm preview` listen on `127.0.0.1`. `HOST=0.0.0.0` is the opt-in for a sandbox that has to reach the machine. That opt-in has no login. The published site is the static build and does not run Vite.
 
 ## Tests worth keeping
 

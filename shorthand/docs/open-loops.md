@@ -26,7 +26,7 @@ The published page and the Origin repo `greyzxcursor/rust-core-app-test-solid2` 
 
 ## Security
 
-Dev and preview listen on every interface, with no login. Cursor's review marked that low severity on both publishes and did not block them. The offer to bind localhost was left for a later publish. The handbook says to tighten it before this tree is a long-lived dev server on a shared machine. The published site is the static build and does not run Vite. The bind was copied here unchanged.
+Dev and preview now default to `127.0.0.1`. `HOST=0.0.0.0` still opens every interface, with no login, for a sandbox that has to reach the machine. The published site is the static build and does not run Vite. The earlier publishes of the separate Origin tree still had the open bind. That tree is not this branch.
 
 ## Pins that will go stale
 

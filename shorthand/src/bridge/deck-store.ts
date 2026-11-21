@@ -107,7 +107,7 @@ export function createDeckBridge(initial: Card[]): DeckBridge {
       });
     },
     setGauge(id, value) {
-      if (Number.isNaN(value)) return;
+      if (!Number.isFinite(value)) return;
       const next = Math.max(0, Math.min(100, Math.round(value)));
       setDeck((draft) => {
         const card = draft.cards.find((item) => item.id === id);
@@ -127,7 +127,7 @@ export function createDeckBridge(initial: Card[]): DeckBridge {
         } else {
           const marked = `${item.detail}${MARK}`;
           if ([...marked].length > 180) {
-            draft.fault = "Cannot reconcile the line: the marker would exceed the 180-character detail limit.";
+            draft.fault = "Cannot reconcile the line: the marker would exceed the 180 code point detail limit.";
             return;
           }
           item.detail = marked;
