@@ -34,7 +34,7 @@ The polymorphism in this pass lives in `kind`, the same closed set as the hull: 
 
 ## How this sits on rust-app-core
 
-The hull already renders the document and serves cards. This page is the island update: same card shape, same refusal of unknown fields, two client roots instead of `assets/island.js`. Pipes, the airlock, and `sysex-delta/1` stay in the Rust crate. This demo does not open a socket. The TypeScript checker is a browser twin of the card rules in `src/schema.rs`. One gap: the hull's own JSON parser refuses exponent forms, and this twin sees the number `JSON.parse` already produced.
+The hull already renders the document and serves cards. This page is the island update: same card shape, same refusal of unknown fields, two client roots instead of `assets/island.js`. Pipes, the airlock, and `sysex-delta/1` stay in the Rust crate. `pnpm dev` proxies `/api` to `http://127.0.0.1:4471`, so a running hull replaces the fixture deck and the form posts the pipe named on the form card. When the hull is down, the fixture stays and a filed line is appended locally to `card.trace`. The TypeScript checker is a browser twin of the card rules in `src/schema.rs`. One gap: the hull's own JSON parser refuses exponent forms, and this twin sees the number `JSON.parse` already produced. Sharing `wasm/hull.wasm` as the only checker is still a later pass.
 
 ## Run
 
@@ -48,7 +48,7 @@ pnpm test
 pnpm dev
 ```
 
-`pnpm dev` and `pnpm preview` prefer `http://127.0.0.1:4483`. A busy port walks to the next free one, and Vite prints the URL that opened. There is no TLS plugin. Set `HOST=0.0.0.0` when a sandbox has to reach the dev server. That opens a listening socket on every interface, with no login. It is not an outbound socket, and the hull's airlock is a separate rule. `?surface=pretext` is the text surface. The header toggle switches it. The skip link follows the visible surface.
+`pnpm dev` and `pnpm preview` prefer `http://127.0.0.1:4483`. A busy port walks to the next free one, and Vite prints the URL that opened. `/api` is proxied to `HULL_ORIGIN`, which defaults to `http://127.0.0.1:4471`. There is no TLS plugin. Set `HOST=0.0.0.0` when a sandbox has to reach the dev server. That opens a listening socket on every interface, with no login. It is not an outbound socket, and the hull's airlock is a separate rule. `?surface=pretext` is the text surface. The header toggle switches it. The skip link follows the visible surface.
 
 ```bash
 pnpm typecheck

@@ -101,4 +101,8 @@ Kinds are `hero`, `stat`, `list`, `form`, `note`, `gauge`, `media`. Steps are `a
 
 ## Shorthand
 
-`shorthand/` is a Solid 2.0.3 candidate for the view `assets/island.js` hand-rolls. Same card kinds. The hull does not serve it, and `Cargo.toml` stays empty. `shorthand/CONTEXT.md` is the prompt. `shorthand/docs/handbook.md` is the companion. From that directory: `pnpm install`, `pnpm test`, `pnpm dev`. `pnpm dev` prefers `http://127.0.0.1:4483`. A busy port walks to the next free one, and Vite prints the URL that opened. `HOST=0.0.0.0` opens that dev server on every interface, with no login. That is a listening socket on the machine running Vite. The hull does not open outbound sockets. There is no TLS plugin.
+`shorthand/` is a Solid 2.0.3 candidate for the view `assets/island.js` hand-rolls. Same card kinds. The hull does not serve that directory, and `Cargo.toml` stays empty. `pnpm dev` prefers `http://127.0.0.1:4483` and proxies `/api` to the hull at `http://127.0.0.1:4471`. Set `HULL_ORIGIN` to point the proxy somewhere else. When the hull is up, the page takes its deck and posts the form card's pipe. When the hull is down, the page keeps the fixture deck and files a line locally. `shorthand/CONTEXT.md` is the prompt. `shorthand/docs/handbook.md` is the companion. From that directory: `pnpm install`, `pnpm test`, `pnpm dev`. A busy port walks to the next free one, and Vite prints the URL that opened. `HOST=0.0.0.0` opens that dev server on every interface, with no login. That is a listening socket on the machine running Vite. The hull does not open outbound sockets. There is no TLS plugin.
+
+## Session record
+
+`docs/decision-log.md` is the decision record for the 21 Nov 2026 session. `docs/lessons.md` is what a later pass should keep. Open work is `shorthand/docs/open-loops.md`.

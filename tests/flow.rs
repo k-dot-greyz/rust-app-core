@@ -212,6 +212,14 @@ fn night_shift_never_falls_back_to_a_white_canvas() {
     assert!(!css.contains("background:#fff"));
     assert!(!css.contains("background: #fff"));
     assert!(!css.contains("#ffffff"));
+    let shorthand = include_str!("../shorthand/src/shell.css").to_ascii_lowercase();
+    assert!(shorthand.contains("#0c0b0a"));
+    assert!(shorthand.contains("color-scheme: dark"));
+    assert!(!shorthand.contains("color-scheme: light"));
+    assert!(!shorthand.contains("background: white"));
+    assert!(!shorthand.contains("background:#fff"));
+    assert!(!shorthand.contains("background: #fff"));
+    assert!(!shorthand.contains("#ffffff"));
 }
 
 #[test]

@@ -66,6 +66,8 @@ So a sandbox install downloads packages the page never fetches. That is real cos
 
 **Dev server bind.** `pnpm dev` and `pnpm preview` prefer `http://127.0.0.1:4483`. A busy port walks to the next free one. There is no TLS plugin. `HOST=0.0.0.0` is the opt-in for a sandbox that has to reach the machine. That opt-in has no login. The published site is the static build and does not run Vite.
 
+**Hull wire.** The dev server proxies `/api` to `http://127.0.0.1:4471` (`HULL_ORIGIN` overrides it). The page polls `GET /api/view` on the same cadence as `assets/island.js`: 3 seconds when the hull answers, then 1s, 2s, 4s, and 8s when it does not. A failed poll keeps the last good deck and writes one tape line for the whole outage. An unchanged epoch and cursor leaves local drills alone, so dragging the gauge is not wiped by an idle poll. A moved cursor, or a new epoch, reconciles `view.deck` after `validateDeck`. The form posts `POST /api/pipes/{pipe}/push` with `X-Airlock-Intent: 1`, using the pipe id and field names on the form card. Offline, `fileLine` still appends to `card.trace` and checks the list cap before it touches the store. `pnpm preview` proxies the same way. `vite build` does not: a static host has to serve `/api` itself or the page stays on the fixture.
+
 ## Tests worth keeping
 
 Each of these fails when a real assumption breaks.
