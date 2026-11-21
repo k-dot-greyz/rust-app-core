@@ -11,6 +11,7 @@ export function InspectorIsland() {
     <div class="inspector">
       <section>
         <h2>{chrome.countsTitle}</h2>
+        <p class="hint">{chrome.countsHint}</p>
         <ol class="counts">
           <For each={bridge.kindCounts}>
             {(row) => (
@@ -54,6 +55,7 @@ export function InspectorIsland() {
         )}
       </Show>
       <section class="drills">
+        <p class="hint">{chrome.drillsHint}</p>
         <For each={drills}>
           {(drill) => (
             <button type="button" onClick={() => runDrill(drill.id)}>
@@ -64,6 +66,7 @@ export function InspectorIsland() {
       </section>
       <section>
         <h2>{chrome.tapeTitle}</h2>
+        <p class="hint">{chrome.tapeHint}</p>
         <ul class="tape" aria-live="polite">
           <For each={bridge.deck.log} fallback={<li>{chrome.emptyTape}</li>}>
             {(line) => <li>{line.text}</li>}

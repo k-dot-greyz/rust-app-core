@@ -8,7 +8,7 @@ export const FIXTURE: Card[] = [
     title: "Kind carries the variant.",
     body: {
       kicker: "Solid 2.0.3",
-      lede: "This deck is the shorthand, running. Cards carry the copy. Two islands share a store. Nudge the gauge and watch one copper count move.",
+      lede: "This deck is the shorthand, running. Drag Integrity and one copper count moves in both columns. Reconcile one line changes a single list detail. This page does not call Hull.",
     },
   },
   {

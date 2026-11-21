@@ -4,11 +4,11 @@ Framework. solid-js@2.0.3 and @solidjs/web@2.0.3, compiled with @solidjs/vite-pl
 
 Imports. createStore, reconcile, createProjection, createMemo, createSignal, createEffect, and flush come from "solid-js". render and dynamic( come from "@solidjs/web". solid-js/store and solid-js/web are gone. The <Dynamic> component is deprecated.
 
-Banned Solid 1 calls. Leave these out: createResource, produce, batch, startTransition, on, onMount, createComputed, createMutable, Suspense, ErrorBoundary, splitProps, mergeProps, and unwrap. A derivation may return a Promise. Put the first unresolved read under Loading. After that, updates are held. Read isPending for the held state. createEffect takes a compute function and an effect function. Writes stage until the next microtask or flush(). A component body is not a place to write a signal.
+Banned Solid 1 calls. Leave these out: createResource, produce, batch, startTransition, on, onMount, createComputed, createMutable, Suspense, ErrorBoundary, splitProps, mergeProps, and unwrap. This hull does not hold an async read. Do not add Loading or isPending. createEffect takes a compute function and an effect function. Writes stage until the next microtask or flush(). A component body is not a place to write a signal.
 
 Props. Never destructure props. Read props.field inside JSX or a computation. Destructuring copies the first value and the binding goes quiet.
 
-Data. Components are shells. Thresholds, copy, and variants live in serializable JSON cards with a stable id. On this hull the discriminant is `kind`: hero, stat, list, form, note, gauge, media. Unknown fields and unknown kinds are refused before they touch the store. Resolve inheritance into plain objects first. Hydrate with:
+Data. Components are shells. Thresholds, copy, and variants live in serializable JSON cards with a stable id. On this hull the discriminant is `kind`: hero, stat, list, form, note, gauge, media. Unknown fields and unknown kinds are refused before they touch the store. This hull has no card inheritance. Pass the cards as plain objects. Hydrate with:
 
 setState((draft) => {
   reconcile(next, "id")(draft.cards);

@@ -4,6 +4,20 @@ Public reference template for a Rust web app core. The shell you run is called H
 
 Roast it. The vocabulary is closed on purpose, the dependency list is empty, and `SPEC.md` is the map of what shipped versus what is still a daydream. Issues and pull requests are the point.
 
+## Words
+
+Read this once. The rest of the repo uses the short names.
+
+- **Hull.** The Rust server in this repo. `cargo run` listens on `127.0.0.1:4471`.
+- **Card.** One JSON record. `kind` is a closed set: `hero`, `stat`, `list`, `form`, `note`, `gauge`, `media`.
+- **Pass.** The sample page: the deck of cards shipped in `modules/`.
+- **Plate.** One line you submit through the form on that page.
+- **Pipe.** A named JSON workflow. `ingress.pass` adds a plate. `ingress.trace` files a short note. `egress.probe` asks the airlock.
+- **Airlock.** The egress check. The default is deny.
+- **Dry dock.** A permit is recorded and `sent` stays false. Nothing leaves the machine.
+- **Deck.** The panel. **Pretext** is the same state as plain text (`?surface=pretext`), and it is also what remains if the panel paint throws.
+- **Shorthand.** The separate Solid 2 page in `shorthand/`. It does not talk to Hull.
+
 Agents pick this up from `agent-flow/references/cursor/rust-app-core.md`. That file is the copy that belongs on the dev-master instruction path.
 
 ## Quickstart

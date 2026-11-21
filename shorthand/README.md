@@ -6,6 +6,20 @@ Two `render()` roots share one module store. Cards are plain JSON with a closed 
 
 `CONTEXT.md` is the prompt to paste into later sessions. `docs/handbook.md` is the companion: what that prompt got right, the supply-chain split, and which tests are worth keeping.
 
+## Words
+
+Same names as the hull, said once.
+
+- **Hull.** The Rust server in the parent repo. It listens on `127.0.0.1:4471`. This page does not call it.
+- **Card.** One JSON record. `kind` is `hero`, `stat`, `list`, `form`, `note`, `gauge`, or `media`.
+- **Deck.** The left column, one render root. **Pretext** is the same cards as plain text. The header button switches them.
+- **Inspector.** The right column, a second render root, reading the same store.
+- **Projection.** A count of cards by kind.
+- **Tape.** The paths that changed on the last write.
+- **Integrity.** The gauge. Drag it. One copper count should move in both columns.
+- **Reconcile one line.** Toggles a mark on a single list detail.
+- **Offer an unknown kind.** A refused write. The deck stays.
+
 ## What the Gemini note got right
 
 The instinct tracks. Fine-grained signals are the runtime version of a JSON-card pipe: the component function runs once, and each binding updates on its own. `createProjection` is real in Solid 2.0.0 (17 Nov 2026), and `createResource` is gone. Stores are proxies over plain objects, so a class instance is the wrong shape. Sibling islands do not share a reactive owner.

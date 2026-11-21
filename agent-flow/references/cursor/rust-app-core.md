@@ -2,7 +2,7 @@
 
 Reference toolkit for the Hull shell. Read this when the task is a Rust web app core, a hosted shell, pipes, cards, or an egress airlock. The binary is `hull`. The repository name is `rust-app-core`.
 
-Source of truth until a public GitHub remote exists: Origin repo `greyzxcursor/rust-web-scaffold`. Blueprint: `SPEC.md`. Human quickstart: `README.md`.
+Source of truth: GitHub `k-dot-greyz/rust-app-core`. Origin `greyzxcursor/rust-web-scaffold` is the earlier scaffold. Blueprint: `SPEC.md`. Human quickstart: `README.md`. The words Hull, pass, plate, pipe, airlock, dry dock, deck, pretext, and shorthand are defined there.
 
 ## Toolchain
 
@@ -61,7 +61,7 @@ node scripts/wasm-smoke.mjs
 
 ## Shorthand
 
-`shorthand/` is a Solid 2 candidate for the hand-rolled island. It is not loaded by the hull, it adds no crate, and it opens no socket. Read `shorthand/CONTEXT.md` before generating a deck in that style. `shorthand/docs/handbook.md` holds the pins and the supply-chain split. Leave `astro add solid` alone until `@astrojs/solid-js@8` is what the resolver installs.
+`shorthand/` is a Solid 2.0.3 candidate for the hand-rolled island. It is not loaded by the hull, it is not part of the hull done-when, it adds no crate, and it opens no socket. Read `shorthand/CONTEXT.md` before generating a deck in that style. `shorthand/docs/handbook.md` holds the pins and the supply-chain split. Leave `astro add solid` alone until `@astrojs/solid-js@8` is what the resolver installs. This hull has no card inheritance and no held async read. Do not add either because an older prompt mentioned them.
 
 ## Checks before you call it done
 

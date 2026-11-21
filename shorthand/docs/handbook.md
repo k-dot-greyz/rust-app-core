@@ -22,7 +22,7 @@ That reading is the part worth keeping. `createProjection` is a real Solid 2 pri
 
 **Import paths.** `createStore`, `reconcile`, `createProjection`, `createMemo`, `createSignal`, `createEffect`, and `flush` come from `"solid-js"`. `render` and `dynamic()` come from `"@solidjs/web"`. `solid-js/store` and `solid-js/web` are gone. `<Dynamic>` is deprecated. `jsxImportSource` is `@solidjs/web`. The compiler plugin is `@solidjs/vite-plugin@3`.
 
-Leave these Solid 1 calls out: `createResource`, `produce`, `batch`, `startTransition`, `on`, `onMount`, `createComputed`, `createMutable`, `Suspense`, `ErrorBoundary`, `splitProps`, `mergeProps`, `unwrap`. A derivation may return a Promise. The first unresolved read goes under `Loading`.
+Leave these Solid 1 calls out: `createResource`, `produce`, `batch`, `startTransition`, `on`, `onMount`, `createComputed`, `createMutable`, `Suspense`, `ErrorBoundary`, `splitProps`, `mergeProps`, `unwrap`. This hull does not hold an async read. Do not add `Loading` or `isPending`.
 
 **Props.** Read `props.field` inside JSX. Destructuring copies the first value and the binding goes quiet.
 

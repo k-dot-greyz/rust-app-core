@@ -10,7 +10,10 @@ export const chrome = {
   surfaceToDeck: "Deck",
   promptTitle: "Prompt",
   countsTitle: "Projection",
+  countsHint: "Counts of cards by kind.",
   tapeTitle: "Tape",
+  tapeHint: "Paths that changed on the last write.",
+  drillsHint: "Reconcile one line toggles a mark on one list detail. Offer an unknown kind is refused, and the deck stays.",
   jsonTitle: "Selected card",
 } as const;
 

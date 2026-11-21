@@ -108,5 +108,8 @@ describe("shorthand prompt", () => {
     expect(prompt).toContain("createProjection");
     expect(prompt).toContain('reconcile(next, "id")');
     expect(prompt).toContain("dynamic(");
+    expect(prompt).toContain("This hull has no card inheritance");
+    expect(prompt).toContain("Do not add Loading or isPending");
+    expect(prompt).not.toContain("Resolve inheritance");
   });
 });

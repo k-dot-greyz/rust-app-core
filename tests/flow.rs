@@ -190,6 +190,11 @@ fn night_shift_never_falls_back_to_a_white_canvas() {
     assert!(page.contains("content=\"dark\""));
     assert!(page.contains("data-surface=\"deck\""));
     assert!(page.contains("No reel loaded"));
+    assert!(page.contains("Send a plate, then run the four airlock probes."));
+    assert!(page.contains("Drop a new card in modules/cards."));
+    assert!(page.contains("Dish, plate title (48)"));
+    assert!(page.contains("Note, optional detail (80)"));
+    assert!(page.contains("Allowlisted, kept, not sent"));
     assert!(page.contains("HULL / NIGHT / PRETEXT"));
     let pretext = hull
         .dispatch(&Request::from_parts("GET", "/", "surface=pretext", vec![], vec![]).unwrap())

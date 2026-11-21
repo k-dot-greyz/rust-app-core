@@ -75,6 +75,9 @@ describe("both islands on one store", () => {
     );
     expect(counts).toContain("list 3");
     expect(counts).toContain("gauge 1");
+    expect(document.body.textContent).toContain("Counts of cards by kind.");
+    expect(document.body.textContent).toContain("Paths that changed on the last write.");
+    expect(document.body.textContent).toContain("Offer an unknown kind is refused, and the deck stays.");
 
     const pre = document.getElementById("pretext-body")?.textContent ?? "";
     expect(pre).toContain("Integrity 81");

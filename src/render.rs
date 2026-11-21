@@ -162,7 +162,7 @@ fn read_asset(name: &str, embedded: &str) -> String {
 }
 
 fn header(html: &mut Markup, hull: &Hull, surface: &str) {
-    html.raw("<header class=\"mast\"><div><p class=\"mark\">Hull</p><p class=\"sub\">night shift · rust 1.99.1 · zero crates in the hull</p>");
+    html.raw("<header class=\"mast\"><div><p class=\"mark\">Hull</p><p class=\"sub\">night shift · rust 1.99.1 · zero crates. Local demo: send a plate, then the four probes. Nothing is sent.</p>");
     html.raw("<nav class=\"surfaces\" aria-label=\"Presentation\"><a data-surface-link=\"deck\" href=\"?surface=deck\"");
     if surface == "deck" {
         html.raw(" aria-current=\"page\"");
@@ -207,7 +207,7 @@ fn airlock_panel(html: &mut Markup, hull: &Hull) {
         ("unlisted", "Unlisted origin — example.com"),
         ("metadata", "Metadata address — 169.254.169.254"),
         ("plain-http", "Plain HTTP — scheme"),
-        ("allowlisted", "Allowlisted dry dock — hooks.hull.invalid"),
+        ("allowlisted", "Allowlisted, kept, not sent — hooks.hull.invalid"),
     ] {
         html.raw("<button class=\"ghost\" type=\"submit\" name=\"probe\" value=\"");
         html.attr(value);
