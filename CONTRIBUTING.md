@@ -1,6 +1,10 @@
 # Contributing
 
+This repository is a reference template. A change should stay useful to the next person who builds on the tree, reuses one component, or reimplements the architecture from `SPEC.md`.
+
 The contract is `SPEC.md`. The human quickstart is `README.md`. Agents read `agent-flow/references/cursor/rust-app-core.md`. This page is the habit those three already state, so a change lands in the same place a stranger will read it.
+
+Keep the three uses obvious. The README says them first: build on this tree, reuse a component, or reimplement the architecture. A new file, a new card, or a port to another stack should still read as one of those. The sample pass is the demo. It is the thing a fork replaces.
 
 ## Schemes
 

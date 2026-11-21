@@ -1,8 +1,14 @@
 # rust-app-core
 
-Reference toolkit for the Hull shell. Read this when the task is a Rust web app core, a hosted shell, pipes, cards, or an egress airlock. The binary is `hull`. The repository name is `rust-app-core`.
+Reference template for a hosted app. Read this when the task is a Rust web app core, a hosted shell, pipes, cards, or an egress airlock. The binary is `hull`. The repository name is `rust-app-core`.
 
-Source of truth: GitHub `k-dot-greyz/rust-app-core`. Origin `greyzxcursor/rust-web-scaffold` is the earlier scaffold. Blueprint: `SPEC.md`. Human quickstart: `README.md`. The words Hull, pass, plate, pipe, airlock, dry dock, deck, pretext, and shorthand are defined there.
+Use it in one of three ways, and say which one the task is:
+
+1. **Build on it.** Copy or fork the tree. Replace the sample cards. The pass is the demo of the architecture.
+2. **Reuse a component.** Lift a card kind, a pipe, the airlock, the delta handshake, the module loader, or the night canvas. `SPEC.md` is the contract. The files are one implementation.
+3. **Reimplement the architecture.** Another language or another UI. Keep JSON cards, closed kinds, named pipes, default-deny egress, and sparse sync.
+
+Source of truth: GitHub `k-dot-greyz/rust-app-core`. Origin `greyzxcursor/rust-web-scaffold` is the earlier scaffold. Blueprint: `SPEC.md`. Human quickstart: `README.md`. The words Hull, pass, plate, pipe, airlock, dry dock, deck, pretext, and shorthand are defined there. `Cargo.toml` stays empty. The way to take a piece is to copy the files or rewrite them against `SPEC.md`.
 
 ## Toolchain
 

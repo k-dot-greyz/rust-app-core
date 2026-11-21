@@ -2,7 +2,7 @@
 
 ## Story
 
-As a developer bootstrapping a hosted app, I want a shell that already has cards, pipes, a schema, and a shut airlock, so I can see the shape of the system before I add a single feature of my own.
+As a developer starting a hosted app, I want a reference template I can build on, reuse a piece from, or reimplement, so the cards, pipes, schema, and shut airlock are a shape I can see before I add a feature of my own.
 
 ## MVP flow
 

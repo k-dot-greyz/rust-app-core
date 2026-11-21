@@ -1,6 +1,6 @@
 # Hull shorthand
 
-A self-documenting Solid 2.0.3 deck for [rust-app-core](https://github.com/k-dot-greyz/rust-app-core) cards. The page is the shorthand prompt, running. It sits in this directory and the hull does not serve it. Pipes, the airlock, and the socket stay in the crate.
+A Solid 2.0.3 reference for the card shells in [rust-app-core](https://github.com/k-dot-greyz/rust-app-core). Copy a shell into another UI, or reimplement the same `kind` switch. The page is that reference, running. It sits in this directory and the hull does not serve it. Pipes, the airlock, and the socket stay in the crate. The parent README names the three uses of the whole repo: build on the tree, reuse a component, or reimplement the architecture.
 
 Two `render()` roots share one module store. Cards are plain JSON with a closed `kind`. Components are shells. A copper digit next to a field is how many times that text node ran. Drag **Integrity** and only that digit moves. **Reconcile one line** updates a single list detail and leaves the hero's node on its first paint. **Offer an unknown kind** is refused before it touches the store.
 

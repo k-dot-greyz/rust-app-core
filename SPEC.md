@@ -1,6 +1,6 @@
-# Hull — pre-release reference
+# Hull — reference template contract
 
-Rust 1.99.1. `Cargo.toml` has an empty `[dependencies]`. This file is the contract the tree has to match. Cards, pipes, and policy are JSON under `modules/`. The page is server-rendered. `assets/island.js` only applies a view the server already computed.
+This file is the contract for all three uses of the repo: building the next app on this tree, reusing one component, and reimplementing the architecture in another language or UI. Rust 1.99.1. `Cargo.toml` has an empty `[dependencies]`. The tree has to match this file. Cards, pipes, and policy are JSON under `modules/`. The page is server-rendered. `assets/island.js` only applies a view the server already computed. A reimplementation keeps the same cards, pipes, airlock, and sparse sync. The Rust here is one implementation of that contract.
 
 ## Words
 

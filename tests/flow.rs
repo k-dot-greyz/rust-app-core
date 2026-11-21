@@ -190,6 +190,8 @@ fn night_shift_never_falls_back_to_a_white_canvas() {
     assert!(page.contains("content=\"dark\""));
     assert!(page.contains("data-surface=\"deck\""));
     assert!(page.contains("No reel loaded"));
+    assert!(page.contains("Reference template"));
+    assert!(page.contains("Copy it, reuse a piece, or reimplement the same architecture."));
     assert!(page.contains("Send a plate, then run the four airlock probes."));
     assert!(page.contains("Drop a new card in modules/cards."));
     assert!(page.contains("Dish, plate title (48)"));

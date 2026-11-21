@@ -5,6 +5,6 @@
   "title": "Doctrine",
   "body": {
     "tone": "ink",
-    "text": "This is the sample pass. Send a plate with the form, then press the four airlock buttons. Drop a new card in modules/cards. Kinds are a closed set, and unknown fields are refused. The airlock's hull check beats the allowlist, so a metadata address stays denied even if a policy file names it. A permit is held in the dry dock. Nothing is sent."
+    "text": "Reference template: copy the repo, reuse a part, or reimplement the architecture. This is the sample pass. Send a plate with the form, then press the four airlock buttons. Drop a new card in modules/cards. Kinds are a closed set, and unknown fields are refused. The airlock's hull check beats the allowlist, so a metadata address stays denied even if a policy file names it. A permit is held in the dry dock. Nothing is sent."
   }
 }

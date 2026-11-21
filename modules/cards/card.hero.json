@@ -4,7 +4,7 @@
   "rev": 1,
   "title": "The pass is open. The street is not.",
   "body": {
-    "kicker": "Shell template",
-    "lede": "This page is a local demo. Send a plate, then run the four airlock probes. Nothing leaves the machine. Cards live inboard as JSON. Pipes move them. Egress waits on a permit, and the dry dock does not own a socket."
+    "kicker": "Reference template",
+    "lede": "This repo is a reference template. Copy it, reuse a piece, or reimplement the same architecture. This page is the sample pass. Send a plate, then run the four airlock probes. Nothing leaves the machine."
   }
 }

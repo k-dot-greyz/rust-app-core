@@ -1,4 +1,4 @@
-Stack and architecture constraints. Paste this into the system prompt or the repo CONTEXT file when generating a hull-style deck.
+Stack and architecture constraints for a reference template. Paste this into the system prompt or the repo CONTEXT file when generating a hull-style deck. The deck is a reference implementation of the rust-app-core card architecture: copy a shell, or reimplement the same `kind` switch. The parent repo is for building on, reusing a component, or reimplementing the architecture in `SPEC.md`.
 
 Framework. solid-js@2.0.3 and @solidjs/web@2.0.3, compiled with @solidjs/vite-plugin@3. Strict TypeScript, no `any`. Astro only through @astrojs/solid-js@8, which is the Solid 2 adapter. As of 21 Nov 2026 that major was not on npm: `npm view @astrojs/solid-js version` returned 7.1.6 and that release peers solid-js ^1.9. Leave `astro add solid` alone until the resolver actually installs @8. Until then, mount each island with its own `render()` from @solidjs/web. jsxImportSource is `@solidjs/web`.
 

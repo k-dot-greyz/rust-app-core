@@ -162,7 +162,7 @@ fn read_asset(name: &str, embedded: &str) -> String {
 }
 
 fn header(html: &mut Markup, hull: &Hull, surface: &str) {
-    html.raw("<header class=\"mast\"><div><p class=\"mark\">Hull</p><p class=\"sub\">night shift · rust 1.99.1 · zero crates. Local demo: send a plate, then the four probes. Nothing is sent.</p>");
+    html.raw("<header class=\"mast\"><div><p class=\"mark\">Hull</p><p class=\"sub\">night shift · rust 1.99.1 · zero crates. Reference template: send a plate, then the four probes. Nothing is sent.</p>");
     html.raw("<nav class=\"surfaces\" aria-label=\"Presentation\"><a data-surface-link=\"deck\" href=\"?surface=deck\"");
     if surface == "deck" {
         html.raw(" aria-current=\"page\"");
@@ -375,7 +375,7 @@ fn hero(html: &mut Markup, hull: &Hull) {
         .unwrap_or("Hull");
     let kicker = card
         .and_then(|card| field(card, "kicker"))
-        .unwrap_or("Shell template");
+        .unwrap_or("Reference template");
     let lede = card
         .and_then(|card| field(card, "lede"))
         .unwrap_or("The pass is open.");

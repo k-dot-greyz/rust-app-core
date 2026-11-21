@@ -1,8 +1,20 @@
 # rust-app-core
 
-Public reference template for a Rust web app core. The shell you run is called Hull. Cards are JSON. Pipes move them. Egress waits on a permit, and the dry dock does not own a socket.
+A reference template for a hosted app. Build the next app on this tree. Lift a component into another project. Or reimplement the architecture and keep the contract in `SPEC.md`.
 
-Roast it. The vocabulary is closed on purpose, the dependency list is empty, and `SPEC.md` is the map of what shipped versus what is still a daydream. Issues and pull requests are the point.
+The shell you run is called Hull. It is the sample, so you can see the shape before you add a feature of your own. Cards are JSON. Pipes move them. Egress waits on a permit, and the dry dock does not own a socket.
+
+## What you do with it
+
+Three uses. Pick one, or mix them.
+
+1. **Build on it.** Fork or copy the tree. Replace the sample cards in `modules/` with the ones your app needs. The pass at `http://127.0.0.1:4471` is the demo of the architecture. Your app is what you put in its place.
+2. **Reuse a component.** Take a card kind, a pipe, the airlock, the delta handshake, the module loader, or the night canvas into another tree. `SPEC.md` is the contract for that piece. The files are one implementation of it.
+3. **Reimplement the architecture.** Write it again in another language or another UI. Keep JSON cards, a closed set of kinds, named pipes, a default-deny egress check, and sparse sync. The Rust here is one way to meet that contract.
+
+`Cargo.toml` has an empty dependency list. The way to take a piece is to copy the files, or to rewrite them against `SPEC.md`.
+
+Roast it. The vocabulary is closed on purpose. `SPEC.md` maps what shipped against what is still a daydream. Issues and pull requests are the point.
 
 ## Words
 

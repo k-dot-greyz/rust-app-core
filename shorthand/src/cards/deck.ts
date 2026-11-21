@@ -8,7 +8,7 @@ export const FIXTURE: Card[] = [
     title: "Kind carries the variant.",
     body: {
       kicker: "Solid 2.0.3",
-      lede: "This deck is the shorthand, running. Drag Integrity and one copper count moves in both columns. Reconcile one line changes a single list detail. This page does not call Hull.",
+      lede: "This deck is a reference for the hull's card kinds. Copy a shell, or reimplement the same kind switch. Drag Integrity and one copper count moves in both columns. Reconcile one line changes a single list detail. This page does not call Hull.",
     },
   },
   {
