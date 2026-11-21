@@ -8,7 +8,7 @@ Use it in one of three ways, and say which one the task is:
 2. **Reuse a component.** Lift a card kind, a pipe, the airlock, the delta handshake, the module loader, or the night canvas. `SPEC.md` is the contract. The files are one implementation.
 3. **Reimplement the architecture.** Another language or another UI. Keep JSON cards, closed kinds, named pipes, default-deny egress, and sparse sync.
 
-Source of truth: GitHub `k-dot-greyz/rust-app-core`. Origin `greyzxcursor/rust-web-scaffold` is the earlier scaffold. Blueprint: `SPEC.md`. Human quickstart: `README.md`. The words Hull, pass, plate, pipe, airlock, dry dock, deck, pretext, and shorthand are defined there. `Cargo.toml` stays empty. The way to take a piece is to copy the files or rewrite them against `SPEC.md`.
+Source of truth: GitHub `k-dot-greyz/rust-app-core`. Origin `greyzxcursor/rust-web-scaffold` is the earlier scaffold. Blueprint: `SPEC.md`. Human quickstart: `README.md`. Session decisions: `docs/decision-log.md`. Considerations for the next edit: `docs/lessons.md`. The words Hull, pass, plate, pipe, airlock, dry dock, deck, pretext, and shorthand are defined in the README. `Cargo.toml` stays empty. The way to take a piece is to copy the files or rewrite them against `SPEC.md`.
 
 ## Toolchain
 
