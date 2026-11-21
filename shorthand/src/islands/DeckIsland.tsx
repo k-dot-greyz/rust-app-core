@@ -6,6 +6,9 @@ import { CardView } from "../ui/CardView.tsx";
 export function DeckIsland() {
   return (
     <div class="deck">
+      <p class="hint" data-hull={bridge.deck.connected ? "up" : "down"}>
+        {bridge.deck.seal.word}. {bridge.deck.seal.detail}
+      </p>
       <Show when={bridge.deck.fault}>
         {(fault) => (
           <p class="fault" role="alert">

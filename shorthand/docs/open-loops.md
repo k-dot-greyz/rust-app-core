@@ -18,11 +18,11 @@ Status on 21 Nov 2026, after the review fixes and the orientation pass on this b
 
 The hull does not serve `shorthand/`. `assets/island.js` is still the view the pass loads. `Cargo.toml` stays empty. `tasks.md` keeps the shorthand out of the hull's done-when. Replacing the island is a later release.
 
-Pipes, the airlock, and `sysex-delta/1` stay in the crate. Filing a line in the shorthand appends to the local store. The form's pipe id is `ingress.trace`, and that name is the hull's pipe. This page does not call it. `load()` replaces the whole deck and clears the tape. That is a full payload, not a delta.
+`pnpm dev` proxies `/api` to the hull and polls `GET /api/view`. The form posts the pipe and the field names on the form card. When the hull is down, filing a line still appends to the local `card.trace`. `load()` is still a full payload. The page does not speak `sysex-delta/1` itself. The hull does. A static `vite build` has no proxy, so a published shorthand host has to provide `/api` or the page stays on the fixture.
 
-The hull's Next.js port still serves `wasm/hull.wasm`. The shorthand is a separate Vite app. Those two front ends are not one app.
+The hull's Next.js port still serves `wasm/hull.wasm`. The shorthand is a separate Vite app. Those two front ends are not one app. The TypeScript twin still checks the sample cards, and it is not yet the wasm checker. The exponent-integer gap below is the remaining schema drift.
 
-`cargo test` does not run `pnpm test`. Nothing in this repo's automation runs the shorthand suite. The night-canvas check looks at the hull page. It does not read `shorthand/src/shell.css`.
+`cargo test` does not run `pnpm test`. Nothing in this repo's automation runs the shorthand suite. The night-canvas check now also reads `shorthand/src/shell.css`.
 
 The TypeScript checker sees the number `JSON.parse` already produced. The hull parser refuses exponent forms. An exponent can become an integer before this twin checks it.
 

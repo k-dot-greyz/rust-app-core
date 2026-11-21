@@ -2,7 +2,7 @@ Stack and architecture constraints for a reference template. Paste this into the
 
 Framework. solid-js@2.0.3 and @solidjs/web@2.0.3, compiled with @solidjs/vite-plugin@3. Strict TypeScript, no `any`. Astro only through @astrojs/solid-js@8, which is the Solid 2 adapter. As of 21 Nov 2026 that major was not on npm: `npm view @astrojs/solid-js version` returned 7.1.6 and that release peers solid-js ^1.9. Leave `astro add solid` alone until the resolver actually installs @8. Until then, mount each island with its own `render()` from @solidjs/web. jsxImportSource is `@solidjs/web`.
 
-Imports. createStore, reconcile, createProjection, createMemo, createSignal, createEffect, and flush come from "solid-js". render and dynamic( come from "@solidjs/web". solid-js/store and solid-js/web are gone. The <Dynamic> component is deprecated.
+Imports. createStore, reconcile, createProjection, createMemo, createSignal, createEffect, and flush come from "solid-js". render and dynamic( come from "@solidjs/web". solid-js/store and solid-js/web are gone. The <Dynamic> component is deprecated. dynamic() picks the shell for a kind. An exhaustive switch next to it fails the build when a kind has no shell. Show narrows the card union inside that shell. Keep that pair. Switch and Match do not replace it.
 
 Banned Solid 1 calls. Leave these out: createResource, produce, batch, startTransition, on, onMount, createComputed, createMutable, Suspense, ErrorBoundary, splitProps, mergeProps, and unwrap. This hull does not hold an async read. Do not add Loading or isPending. createEffect takes a compute function and an effect function. Writes stage until the next microtask or flush(). A component body is not a place to write a signal.
 

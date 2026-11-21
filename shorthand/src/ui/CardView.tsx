@@ -150,6 +150,15 @@ function FormCard(props: { card: Card }) {
             const form = event.currentTarget;
             if (!(form instanceof HTMLFormElement)) return;
             const data = new FormData(form);
+            const plate = card();
+            if (bridge.deck.connected) {
+              const payload: Record<string, string> = {};
+              for (const field of plate.body.fields) payload[field.name] = String(data.get(field.name) ?? "");
+              void bridge.pushPipe(plate.body.pipe, payload).then((issues) => {
+                if (issues.length === 0) form.reset();
+              });
+              return;
+            }
             const title = String(data.get("title") ?? "");
             const detail = String(data.get("detail") ?? "");
             const issues = bridge.fileLine(title, detail);

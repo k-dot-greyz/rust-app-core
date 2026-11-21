@@ -1,4 +1,5 @@
 import { render } from "@solidjs/web";
+import { bridge } from "./bridge/deck-store.ts";
 import { chrome } from "./cards/chrome.ts";
 import { DeckIsland } from "./islands/DeckIsland.tsx";
 import { InspectorIsland } from "./islands/InspectorIsland.tsx";
@@ -33,3 +34,8 @@ if (inspectorRoot instanceof HTMLElement) render(() => <InspectorIsland />, insp
 
 const pretext = document.querySelector("#pretext pre");
 if (pretext instanceof HTMLElement) watchPretext(pretext);
+
+if (import.meta.env.MODE !== "test") {
+  const stopSync = bridge.startSync();
+  window.addEventListener("pagehide", stopSync);
+}

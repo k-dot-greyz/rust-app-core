@@ -144,6 +144,112 @@ describe("deck bridge", () => {
     expect(bridge.deck.selectedId).toBe("card.gauge");
   });
 
+  it("keeps a local gauge when the hull cursor has not moved", () => {
+    const bridge = createDeckBridge(freshDeck());
+    const view = { epoch: "abc", cursor: 2, seal: { word: "SEALED", detail: "shut" }, deck: freshDeck() };
+    expect(bridge.applyView(view)).toBe(true);
+    flush();
+    expect(bridge.deck.connected).toBe(true);
+    expect(bridge.deck.cursor).toBe(2);
+    expect(bridge.deck.seal.word).toBe("SEALED");
+    bridge.setGauge("card.gauge", 40);
+    flush();
+    expect(bridge.applyView(view)).toBe(true);
+    flush();
+    const gauge = bridge.deck.cards.find((card) => card.id === "card.gauge");
+    expect(gauge?.kind === "gauge" && gauge.body.value).toBe(40);
+    expect(bridge.applyView({ ...view, cursor: 1 })).toBe(true);
+    flush();
+    expect(gauge?.kind === "gauge" && gauge.body.value).toBe(40);
+    const next = freshDeck();
+    const moved = next.find((card) => card.id === "card.gauge");
+    if (moved?.kind !== "gauge") throw new Error("missing gauge");
+    moved.body.value = 10;
+    expect(bridge.applyView({ ...view, cursor: 3, deck: next })).toBe(true);
+    flush();
+    const after = bridge.deck.cards.find((card) => card.id === "card.gauge");
+    expect(after?.kind === "gauge" && after.body.value).toBe(10);
+  });
+
+  it("accepts a new epoch even when the cursor restarts", () => {
+    const bridge = createDeckBridge(freshDeck());
+    expect(bridge.applyView({ epoch: "one", cursor: 4, deck: freshDeck() })).toBe(true);
+    flush();
+    const next = freshDeck();
+    const gauge = next.find((card) => card.id === "card.gauge");
+    if (gauge?.kind !== "gauge") throw new Error("missing gauge");
+    gauge.body.value = 12;
+    expect(bridge.applyView({ epoch: "two", cursor: 0, deck: next })).toBe(true);
+    flush();
+    const after = bridge.deck.cards.find((card) => card.id === "card.gauge");
+    expect(after?.kind === "gauge" && after.body.value).toBe(12);
+    expect(bridge.deck.epoch).toBe("two");
+  });
+
+  it("holds the last deck when a view fails validation", () => {
+    const bridge = createDeckBridge(freshDeck());
+    const hero = bridge.deck.cards.find((card) => card.id === "card.hero");
+    expect(bridge.applyView({ epoch: "abc", cursor: 1, deck: [{ id: "nope" }] })).toBe(false);
+    flush();
+    expect(bridge.deck.fault).toContain("Hull view rejected");
+    expect(bridge.deck.cards.find((card) => card.id === "card.hero")).toBe(hero);
+    expect(bridge.deck.connected).toBe(false);
+  });
+
+  it("posts a pipe with the airlock header and applies the returned view", async () => {
+    const bridge = createDeckBridge(freshDeck());
+    const next = freshDeck();
+    const trace = next.find((card) => card.id === "card.trace");
+    if (trace?.kind !== "list") throw new Error("missing trace");
+    trace.body.items.push({ title: "From hull", detail: "landed", tone: "ink" });
+    const seen: { url: string; init: RequestInit | undefined }[] = [];
+    const original = globalThis.fetch;
+    globalThis.fetch = (async (url: string | URL | Request, init?: RequestInit) => {
+      seen.push({ url: String(url), init });
+      return new Response(
+        JSON.stringify({
+          ok: true,
+          view: { epoch: "abc", cursor: 4, seal: { word: "SEALED", detail: "shut" }, deck: next },
+        }),
+        { status: 200, headers: { "content-type": "application/json" } },
+      );
+    }) as typeof fetch;
+    try {
+      expect(await bridge.pushPipe("ingress.pass", { dish: "Morning", note: "Still here." })).toEqual([]);
+      flush();
+    } finally {
+      globalThis.fetch = original;
+    }
+    expect(seen).toHaveLength(1);
+    expect(seen[0]?.url).toBe("/api/pipes/ingress.pass/push");
+    expect(seen[0]?.init?.method).toBe("POST");
+    const headers = new Headers(seen[0]?.init?.headers);
+    expect(headers.get("x-airlock-intent")).toBe("1");
+    expect(seen[0]?.init?.body).toBe(JSON.stringify({ dish: "Morning", note: "Still here." }));
+    const filed = bridge.deck.cards.find((card) => card.id === "card.trace");
+    expect(filed?.kind === "list" && filed.body.items.some((item) => item.title === "From hull")).toBe(true);
+    expect(bridge.deck.log[0]?.text).toContain("Pushed ingress.pass");
+  });
+
+  it("backs off once per outage and keeps the fixture", async () => {
+    const bridge = createDeckBridge(freshDeck());
+    const hero = bridge.deck.cards.find((card) => card.id === "card.hero");
+    const original = globalThis.fetch;
+    globalThis.fetch = (async () => {
+      throw new Error("down");
+    }) as typeof fetch;
+    try {
+      expect(await bridge.syncNow()).toBe(false);
+      expect(await bridge.syncNow()).toBe(false);
+      flush();
+    } finally {
+      globalThis.fetch = original;
+    }
+    expect(bridge.deck.connected).toBe(false);
+    expect(bridge.deck.cards.find((card) => card.id === "card.hero")).toBe(hero);
+    expect(bridge.deck.log.filter((line) => line.text.includes("did not answer"))).toHaveLength(1);
+  });
+
   it("projects a count per kind", () => {
     const bridge = createDeckBridge(freshDeck());
     flush();

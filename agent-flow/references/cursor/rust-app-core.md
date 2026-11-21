@@ -69,7 +69,7 @@ node scripts/wasm-smoke.mjs
 
 ## Shorthand
 
-`shorthand/` is a Solid 2.0.3 candidate for the hand-rolled island. It is not loaded by the hull, it is not part of the hull done-when, it adds no crate, and it opens no socket. Read `shorthand/CONTEXT.md` before generating a deck in that style. `shorthand/docs/handbook.md` holds the pins and the supply-chain split. Leave `astro add solid` alone until `@astrojs/solid-js@8` is what the resolver installs. This hull has no card inheritance and no held async read. Do not add either because an older prompt mentioned them.
+`shorthand/` is a Solid 2.0.3 candidate for the hand-rolled island. It is not loaded by the hull, it is not part of the hull done-when, and it adds no crate. `pnpm dev` proxies `/api` to `http://127.0.0.1:4471` and polls the hull view. It opens no outbound socket of its own. Read `shorthand/CONTEXT.md` before generating a deck in that style. Keep `dynamic()` as the shell picker. Switch and Match do not replace it. `shorthand/docs/handbook.md` holds the pins and the supply-chain split. Leave `astro add solid` alone until `@astrojs/solid-js@8` is what the resolver installs. This hull has no card inheritance and no held async read. Do not add either because an older prompt mentioned them.
 
 ## Checks before you call it done
 
