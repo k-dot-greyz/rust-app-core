@@ -6,9 +6,9 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "vite --port 4483 --strictPort",
+    "dev": "vite --port 4483",
     "build": "tsc --noEmit && vite build",
-    "preview": "vite preview --port 4483 --strictPort",
+    "preview": "vite preview --port 4483",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
   },

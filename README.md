@@ -37,13 +37,21 @@ Open the pass, send a plate through `ingress.pass`, then knock on the airlock. T
 
 ## Run it
 
-The pass is at `http://127.0.0.1:4471`. `PORT` and `HOST` change the bind. `HULL_MODULES` points at the module directory (default `modules/`). Set `HULL_WATCH=0` to stop the file poll.
+The pass is at `http://127.0.0.1:4471`. That scheme is the right one: loopback never leaves the machine, and `http://127.0.0.1` is already a secure context. `PORT` and `HOST` change the bind. `PORT=0` asks the OS for a free port. If `4471` is already taken, the process does that on its own and prints the URL that opened. `HOST` defaults to `127.0.0.1`. `HOST=0.0.0.0` listens on every interface, with no login. `HULL_MODULES` points at the module directory (default `modules/`). Set `HULL_WATCH=0` to stop the file poll.
 
 ```bash
 cargo test
 ```
 
 Drop a card in `modules/cards`, a pipe in `modules/pipes`, and the dev server picks them up. A file that does not validate leaves the last good bundle up and shows a fault.
+
+## Schemes and ports
+
+A URL that names a host other than loopback is `https://`, unless it is an intentional denial fixture. The metadata probe and the plain-HTTP probe stay on `http://` so the airlock can refuse them. `modules/policy.json` sets `https_only: true`.
+
+Loopback dev servers stay `http://`. Do not add a TLS crate, and do not ship a self-signed certificate for someone to click through. The published host terminates TLS. `scripts/wasm-smoke.mjs` uses `https://hull.local/...` for that reason. Dispatch still reads only the path.
+
+Preferred ports stay uncommon and stable: hull `4471`, shorthand `4483`. They are not `3000`, `5173`, or `8080`. If the preferred port is taken, the process binds one the OS assigns and prints that URL.
 
 ## The shape
 
@@ -81,4 +89,4 @@ Kinds are `hero`, `stat`, `list`, `form`, `note`, `gauge`, `media`. Steps are `a
 
 ## Shorthand
 
-`shorthand/` is a Solid 2.0.3 candidate for the view `assets/island.js` hand-rolls. Same card kinds. The hull does not serve it, and `Cargo.toml` stays empty. `shorthand/CONTEXT.md` is the prompt. `shorthand/docs/handbook.md` is the companion. From that directory: `pnpm install`, `pnpm test`, `pnpm dev`. `pnpm dev` listens on `127.0.0.1:4483`. `HOST=0.0.0.0` opens that dev server on every interface, with no login. That is a listening socket on the machine running Vite. The hull does not open outbound sockets.
+`shorthand/` is a Solid 2.0.3 candidate for the view `assets/island.js` hand-rolls. Same card kinds. The hull does not serve it, and `Cargo.toml` stays empty. `shorthand/CONTEXT.md` is the prompt. `shorthand/docs/handbook.md` is the companion. From that directory: `pnpm install`, `pnpm test`, `pnpm dev`. `pnpm dev` prefers `http://127.0.0.1:4483`. A busy port walks to the next free one, and Vite prints the URL that opened. `HOST=0.0.0.0` opens that dev server on every interface, with no login. That is a listening socket on the machine running Vite. The hull does not open outbound sockets. There is no TLS plugin.

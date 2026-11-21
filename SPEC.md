@@ -51,8 +51,10 @@ Inbound HTTP/1.1 on the standard library, one request per connection, `Content-L
 
 Two ports, one dispatch:
 
-- Local: `cargo run` binds `TcpListener` in `src/server.rs`. Default port **4471**.
-- Hosted: `app/[[...path]]/route.js` loads `wasm/hull.wasm` through `lib/hull.mjs` and calls `hull_handle`. Next is the port. The crate is the product. One wasm instance per isolate; a cold start plates a fresh service.
+- Local: `cargo run` binds `TcpListener` in `src/server.rs`. Preferred port **4471**, on `127.0.0.1`. The scheme is `http` because the bytes stay on the machine. A taken port, or `PORT=0`, binds a port the OS assigns and the process prints that URL. `HOST=0.0.0.0` is the opt-in that listens on every interface, with no login.
+- Hosted: `app/[[...path]]/route.js` loads `wasm/hull.wasm` through `lib/hull.mjs` and calls `hull_handle`. The host terminates TLS. Smoke requests use `https://hull.local`. Dispatch reads the path, not the scheme. Next is the port. The crate is the product. One wasm instance per isolate; a cold start plates a fresh service.
+
+A URL that is not loopback is `https://`, except the denial fixtures in the probe table above. Do not add a TLS crate. Do not ship a self-signed certificate. The shorthand prefers port **4483** and walks forward when that port is taken. It does not terminate TLS either.
 
 ## Sample pass
 

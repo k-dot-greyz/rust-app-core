@@ -48,7 +48,7 @@ pnpm test
 pnpm dev
 ```
 
-`pnpm dev` and `pnpm preview` listen on `127.0.0.1:4483`. Set `HOST=0.0.0.0` when a sandbox has to reach the dev server. That opens a listening socket on every interface, with no login. It is not an outbound socket, and the hull's airlock is a separate rule. `?surface=pretext` is the text surface. The header toggle switches it. The skip link follows the visible surface.
+`pnpm dev` and `pnpm preview` prefer `http://127.0.0.1:4483`. A busy port walks to the next free one, and Vite prints the URL that opened. There is no TLS plugin. Set `HOST=0.0.0.0` when a sandbox has to reach the dev server. That opens a listening socket on every interface, with no login. It is not an outbound socket, and the hull's airlock is a separate rule. `?surface=pretext` is the text surface. The header toggle switches it. The skip link follows the visible surface.
 
 ```bash
 pnpm typecheck

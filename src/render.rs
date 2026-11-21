@@ -207,7 +207,10 @@ fn airlock_panel(html: &mut Markup, hull: &Hull) {
         ("unlisted", "Unlisted origin — example.com"),
         ("metadata", "Metadata address — 169.254.169.254"),
         ("plain-http", "Plain HTTP — scheme"),
-        ("allowlisted", "Allowlisted, kept, not sent — hooks.hull.invalid"),
+        (
+            "allowlisted",
+            "Allowlisted, kept, not sent — hooks.hull.invalid",
+        ),
     ] {
         html.raw("<button class=\"ghost\" type=\"submit\" name=\"probe\" value=\"");
         html.attr(value);
