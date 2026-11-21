@@ -339,6 +339,7 @@ pub fn safe_media_src(src: &str) -> bool {
     };
     !name.is_empty()
         && name.len() <= 80
+        && !matches!(name, "." | "..")
         && !name.contains('/')
         && !name.contains('\\')
         && !name.contains(':')
@@ -650,6 +651,14 @@ mod tests {
         let card = parse(r#"{"id":"card.bay","kind":"media","rev":1,"title":"Bay","body":{"medium":"video","src":"https://evil.example/reel.mp4","caption":"no","fallback":"dark"}}"#).unwrap();
         let err = validate_card(&card).unwrap_err();
         assert!(err.iter().any(|issue| issue.path == "/body/src"));
+    }
+
+    #[test]
+    fn media_src_must_name_a_file() {
+        assert!(!safe_media_src("/assets/."));
+        assert!(!safe_media_src("/assets/.."));
+        assert!(safe_media_src("/assets/reel.mp4"));
+        assert!(safe_media_src(""));
     }
 
     #[test]

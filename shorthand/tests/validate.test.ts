@@ -1,6 +1,5 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { cardChanges } from "../src/cards/delta.ts";
 import { freshDeck } from "../src/cards/deck.ts";
 import { toPretext } from "../src/cards/pretext.ts";
 import { issuesText, validateDeck } from "../src/cards/validate.ts";
@@ -12,8 +11,16 @@ describe("hull card contract", () => {
     expect(result.ok).toBe(true);
     if (result.ok) {
       expect(result.cards).toHaveLength(9);
-      expect(cardChanges(cards, result.cards)).toEqual([]);
+      expect(result.cards).toStrictEqual(cards);
     }
+  });
+
+  it("rejects the later occurrence of a duplicate card ID", () => {
+    const [hero, ...cards] = freshDeck();
+    expect(validateDeck([hero, ...cards, hero])).toEqual({
+      ok: false,
+      issues: [{ path: "/9/id", detail: "duplicate card id" }],
+    });
   });
 
   it("refuses an unknown field", () => {
@@ -34,12 +41,12 @@ describe("hull card contract", () => {
     if (!result.ok) expect(result.issues.some((issue) => issue.path === "/0/kind" && issue.detail === "unknown card kind")).toBe(true);
   });
 
-  it("refuses a remote media src", () => {
+  it.each(["https://evil.example/reel.mp4", "/assets/.", "/assets/.."])("refuses media src %s", (src) => {
     const bay = freshDeck().find((card) => card.kind === "media");
     const result = validateDeck([
       {
         ...bay,
-        body: { ...bay?.body, src: "https://evil.example/reel.mp4" },
+        body: { ...bay?.body, src },
       },
     ]);
     expect(result.ok).toBe(false);

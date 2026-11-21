@@ -107,13 +107,19 @@ describe("both islands on one store", () => {
     const detail = form.querySelector('input[name="detail"]');
     if (!(title instanceof HTMLInputElement) || !(detail instanceof HTMLInputElement)) throw new Error("missing fields");
 
-    title.value = "Hull radio";
+    expect(title.hasAttribute("maxlength")).toBe(false);
+    const line = "🚀".repeat(48);
+    title.value = `${line}🚀`;
+    title.dispatchEvent(new Event("input", { bubbles: true }));
+    expect(title.value).toBe(line);
     detail.value = "Still local.";
     form.requestSubmit();
     flush();
 
     const trace = () => document.getElementById("card.trace");
-    expect(trace()?.textContent).toContain("Hull radio");
+    expect(trace()?.textContent).toContain(line);
+    expect(title.value).toBe("");
+    expect(detail.value).toBe("");
     expect(trace()?.textContent).toContain("Still local.");
     expect(document.querySelector('[role="alert"]')).toBeNull();
 
@@ -123,5 +129,29 @@ describe("both islands on one store", () => {
     flush();
     expect(trace()?.textContent).not.toContain("no title");
     expect(trace()?.querySelectorAll("li")).toHaveLength(2);
+  });
+
+  it("keeps the form input when the trace is full", () => {
+    const cards = freshDeck();
+    const trace = cards.find((card) => card.id === "card.trace");
+    if (trace?.kind !== "list" || !trace.body.items[0]) throw new Error("missing trace fixture");
+    trace.body.items = Array.from({ length: 24 }, () => ({ ...trace.body.items[0]! }));
+    expect(bridge.load(cards)).toEqual([]);
+    flush();
+
+    const form = document.querySelector('[id="card.plate"] form');
+    if (!(form instanceof HTMLFormElement)) throw new Error("missing form");
+    const title = form.querySelector('input[name="title"]');
+    const detail = form.querySelector('input[name="detail"]');
+    if (!(title instanceof HTMLInputElement) || !(detail instanceof HTMLInputElement)) throw new Error("missing fields");
+    title.value = "Hull radio";
+    detail.value = "Still local.";
+    form.requestSubmit();
+    flush();
+
+    expect(document.querySelector('[role="alert"]')?.textContent).toContain("a list holds at most 24");
+    expect(document.getElementById("card.trace")?.querySelectorAll("li")).toHaveLength(24);
+    expect(title.value).toBe("Hull radio");
+    expect(detail.value).toBe("Still local.");
   });
 });

@@ -35,10 +35,18 @@ export function validateDeck(value: unknown): DeckResult {
   }
   const issues: Issue[] = [];
   const cards: Card[] = [];
+  const ids = new Set<string>();
   for (const [index, item] of value.entries()) {
     const result = validateCard(item, `/${index}`);
     if (result.issues.length > 0) issues.push(...result.issues);
-    else if (result.card) cards.push(result.card);
+    else if (result.card) {
+      if (ids.has(result.card.id)) {
+        issues.push({ path: `/${index}/id`, detail: "duplicate card id" });
+        continue;
+      }
+      ids.add(result.card.id);
+      cards.push(result.card);
+    }
   }
   if (issues.length > 0) return { ok: false, issues };
   return { ok: true, cards };
@@ -416,7 +424,7 @@ export function safeMediaSrc(src: string): boolean {
   if (src.length === 0) return true;
   if (!src.startsWith("/assets/")) return false;
   const name = src.slice("/assets/".length);
-  if (name.length === 0 || name.length > 80) return false;
+  if (name.length === 0 || name.length > 80 || name === "." || name === "..") return false;
   if (name.includes("/") || name.includes("\\") || name.includes(":")) return false;
   for (const char of name) {
     if (!isLower(char) && !isUpper(char) && !isDigit(char) && char !== "." && char !== "_" && char !== "-") return false;

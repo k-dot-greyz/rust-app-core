@@ -161,7 +161,19 @@ function FormCard(props: { card: Card }) {
             {(field) => (
               <label>
                 <span>{field.label}</span>
-                <input name={field.name} type="text" required={field.required} maxlength={field.max} autocomplete="off" />
+                <input
+                  name={field.name}
+                  type="text"
+                  required={field.required}
+                  maxlength={field.name === "title" ? undefined : field.max}
+                  onInput={(event) => {
+                    if (field.name !== "title") return;
+                    const input = event.currentTarget;
+                    const points = [...input.value];
+                    if (points.length > field.max) input.value = points.slice(0, field.max).join("");
+                  }}
+                  autocomplete="off"
+                />
               </label>
             )}
           </For>

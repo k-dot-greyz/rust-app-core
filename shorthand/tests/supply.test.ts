@@ -1,11 +1,12 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 
 const root = fileRoot();
 
 function fileRoot(): string {
-  return new URL("..", import.meta.url).pathname;
+  return fileURLToPath(new URL("..", import.meta.url));
 }
 
 function walk(dir: string): string[] {

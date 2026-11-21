@@ -60,31 +60,24 @@ export function createDeckBridge(initial: Card[]): DeckBridge {
     return JSON.stringify(card ? snapshot(card) : null, null, 2);
   });
 
-  function note(text: string) {
-    setDeck((draft) => {
-      draft.log.unshift({ id: `note-${(serial += 1)}`, text });
-      if (draft.log.length > TAPE_MAX) draft.log.pop();
-    });
+  function note(draft: DeckState, text: string) {
+    draft.log.unshift({ id: `note-${(serial += 1)}`, text });
+    if (draft.log.length > TAPE_MAX) draft.log.pop();
   }
 
-  function accept(raw: unknown, tape?: string): Issue[] {
+  function accept(draft: DeckState, raw: unknown, tape?: string) {
     const result = validateDeck(raw);
     if (!result.ok) {
-      setDeck((draft) => {
-        draft.fault = issuesText(result.issues);
-      });
-      return result.issues;
+      draft.fault = issuesText(result.issues);
+      return;
     }
-    const changes = cardChanges(snapshot(deck.cards), result.cards);
-    setDeck((draft) => {
-      reconcile(result.cards, "id")(draft.cards);
-      draft.fault = null;
-      if (!draft.cards.some((card) => card.id === draft.selectedId)) {
-        draft.selectedId = draft.cards[0]?.id ?? "";
-      }
-    });
-    if (tape) note(`${tape} ${changes.join(", ") || "no leaf changes"}`);
-    return [];
+    const changes = cardChanges(snapshot(draft.cards), result.cards);
+    reconcile(result.cards, "id")(draft.cards);
+    draft.fault = null;
+    if (!draft.cards.some((card) => card.id === draft.selectedId)) {
+      draft.selectedId = draft.cards[0]?.id ?? "";
+    }
+    if (tape) note(draft, `${tape} ${changes.join(", ") || "no leaf changes"}`);
   }
 
   return {
@@ -114,6 +107,7 @@ export function createDeckBridge(initial: Card[]): DeckBridge {
       });
     },
     setGauge(id, value) {
+      if (Number.isNaN(value)) return;
       const next = Math.max(0, Math.min(100, Math.round(value)));
       setDeck((draft) => {
         const card = draft.cards.find((item) => item.id === id);
@@ -122,20 +116,33 @@ export function createDeckBridge(initial: Card[]): DeckBridge {
       });
     },
     nudgeLine() {
-      const next = structuredClone(snapshot(deck.cards));
-      const list = next.find((card) => card.id === "card.tracked");
-      if (!list || list.kind !== "list") return;
-      const item = list.body.items[0];
-      if (!item) return;
-      item.detail = item.detail.endsWith(MARK) ? item.detail.slice(0, -MARK.length) : `${item.detail}${MARK}`;
-      accept(next, "Reconciled one list line.");
+      setDeck((draft) => {
+        const next = structuredClone(snapshot(draft.cards));
+        const list = next.find((card) => card.id === "card.tracked");
+        if (list?.kind !== "list") return;
+        const item = list.body.items[0];
+        if (!item) return;
+        if (item.detail.endsWith(MARK)) {
+          item.detail = item.detail.slice(0, -MARK.length);
+        } else {
+          const marked = `${item.detail}${MARK}`;
+          if ([...marked].length > 180) {
+            draft.fault = "Cannot reconcile the line: the marker would exceed the 180-character detail limit.";
+            return;
+          }
+          item.detail = marked;
+        }
+        accept(draft, next, "Reconciled one list line.");
+      });
     },
     offerBadKind() {
-      const next = structuredClone(snapshot(deck.cards)) as { kind: string }[];
-      const first = next[0];
-      if (!first) return;
-      first.kind = "sparkle";
-      accept(next);
+      setDeck((draft) => {
+        const next = structuredClone(snapshot(draft.cards)) as { kind: string }[];
+        const first = next[0];
+        if (!first) return;
+        first.kind = "sparkle";
+        accept(draft, next);
+      });
     },
     fileLine(title, detail) {
       const issues: Issue[] = [];
@@ -149,21 +156,20 @@ export function createDeckBridge(initial: Card[]): DeckBridge {
         });
         return issues;
       }
-      let filed = false;
       setDeck((draft) => {
         const list = draft.cards.find((card) => card.id === "card.trace");
-        if (!list || list.kind !== "list") return;
-        if (list.body.items.length >= 24) {
-          draft.fault = "/body/items: a list holds at most 24";
-          return;
+        if (list?.kind !== "list") {
+          issues.push({ path: "/card.trace", detail: "expected a trace list" });
+        } else if (list.body.items.length >= 24) {
+          issues.push({ path: "/body/items", detail: "a list holds at most 24" });
+        } else {
+          const tone: Tone = list.body.items[0]?.tone ?? "ink";
+          list.body.items.push({ title, detail, tone });
+          note(draft, "Filed a line on the trace.");
         }
-        const tone: Tone = list.body.items[0]?.tone ?? "ink";
-        list.body.items.push({ title, detail, tone });
-        draft.fault = null;
-        filed = true;
+        draft.fault = issues.length > 0 ? issuesText(issues) : null;
       });
-      if (filed) note("Filed a line on the trace.");
-      return [];
+      return issues;
     },
   };
 }

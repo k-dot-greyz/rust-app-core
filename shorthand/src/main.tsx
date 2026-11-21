@@ -4,19 +4,25 @@ import { DeckIsland } from "./islands/DeckIsland.tsx";
 import { InspectorIsland } from "./islands/InspectorIsland.tsx";
 import { watchPretext } from "./surface.ts";
 
-const surface = new URLSearchParams(location.search).get("surface") === "pretext" ? "pretext" : "deck";
-document.body.dataset.surface = surface;
-
 const toggle = document.querySelector("#surface-toggle");
-if (toggle instanceof HTMLButtonElement) {
-  const paintToggle = () => {
-    const pretext = document.body.dataset.surface === "pretext";
+const skip = document.querySelector(".skip");
+
+function setSurface(surface: "deck" | "pretext") {
+  document.body.dataset.surface = surface;
+  const pretext = surface === "pretext";
+  if (toggle instanceof HTMLButtonElement) {
     toggle.textContent = pretext ? chrome.surfaceToDeck : chrome.surfaceToPretext;
-  };
-  paintToggle();
+  }
+  if (skip instanceof HTMLAnchorElement) {
+    skip.href = pretext ? "#pretext" : "#deck-root";
+    skip.textContent = pretext ? "Skip to Pretext" : "Skip to the deck";
+  }
+}
+
+setSurface(new URLSearchParams(location.search).get("surface") === "pretext" ? "pretext" : "deck");
+if (toggle instanceof HTMLButtonElement) {
   toggle.addEventListener("click", () => {
-    document.body.dataset.surface = document.body.dataset.surface === "pretext" ? "deck" : "pretext";
-    paintToggle();
+    setSurface(document.body.dataset.surface === "pretext" ? "deck" : "pretext");
   });
 }
 

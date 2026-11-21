@@ -67,4 +67,4 @@ Kinds are `hero`, `stat`, `list`, `form`, `note`, `gauge`, `media`. Steps are `a
 
 ## Shorthand
 
-`shorthand/` is a Solid 2.0.3 candidate for the view `assets/island.js` hand-rolls. Same card kinds. The hull does not serve it, and `Cargo.toml` stays empty. `shorthand/CONTEXT.md` is the prompt. `shorthand/docs/handbook.md` is the companion. From that directory: `pnpm install`, `pnpm test`, `pnpm dev`. The dev server is its own port. It opens no socket.
+`shorthand/` is a Solid 2.0.3 candidate for the view `assets/island.js` hand-rolls. Same card kinds. The hull does not serve it, and `Cargo.toml` stays empty. `shorthand/CONTEXT.md` is the prompt. `shorthand/docs/handbook.md` is the companion. From that directory: `pnpm install`, `pnpm test`, `pnpm dev`. Vite listens on `0.0.0.0:4483`, exposing a listening socket on every IPv4 interface. The hull does not open outbound sockets.
