@@ -26,7 +26,7 @@ Hull is the Rust server. `cargo run` listens on `http://127.0.0.1:4471`. It serv
 
 The Next.js port (`app/[[...path]]/route.js`, `wasm/hull.wasm`) is a third front end. It calls the same `dispatch`. It is not the shorthand, and the shorthand is not it.
 
-## Solid 2.0.3, pinned
+## Solid 2.0.3, floored
 
 Checked against solid-js 2.0.3, `@solidjs/web` 2.0.3, and `@solidjs/vite-plugin` 3.0.1.
 
@@ -48,7 +48,7 @@ The deck is Vite plus two `render()` roots that import one module store. That is
 
 ## Supply chain stays small
 
-Runtime dependencies of the shorthand are `solid-js@2.0.3` and `@solidjs/web@2.0.3`, exact pins, no caret. Playwright, Astro, and React stay out of that package. `happy-dom@21.0.4` is the test DOM. pnpm is the installer because npm 10.9.9’s arborist crashed resolving Vitest’s peers (`edgesOut`).
+Runtime dependencies of the shorthand are floored at `solid-js@2.0.3` and `@solidjs/web@2.0.3` (`>=` in package.json). The lockfile records the resolution. Playwright, Astro, and React stay out of that package. `happy-dom` is floored at 21.0.4 and is the test DOM. pnpm is the installer because npm 10.9.9’s arborist crashed resolving Vitest’s peers (`edgesOut`).
 
 The install still downloads `@solidjs/signals`, `seroval`, `seroval-plugins`, and `csstype`. A client chunk from this session had no `seroval` string. The download is install cost. `tests/supply.test.ts` fails the suite if a banned runtime or a `.js` file appears under `shorthand/src`.
 

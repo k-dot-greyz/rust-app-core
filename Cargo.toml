@@ -2,7 +2,7 @@
 name = "hull"
 version = "0.1.0"
 edition = "2024"
-rust-version = "1.99"
+rust-version = "1.99.1"
 description = "A hosted web app shell: JSON cards, open pipes, a default-deny egress airlock."
 license = "MIT"
 publish = false

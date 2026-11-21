@@ -20,15 +20,18 @@ function walk(dir: string): string[] {
 }
 
 describe("supply and source pins", () => {
-  it("keeps the runtime to the two Solid packages, pinned exact", () => {
+  it("keeps the runtime to the two Solid packages, floored at 2.0.3", () => {
     const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8")) as {
       dependencies: Record<string, string>;
       devDependencies: Record<string, string>;
     };
     expect(pkg.dependencies).toEqual({
-      "@solidjs/web": "2.0.3",
-      "solid-js": "2.0.3",
+      "@solidjs/web": ">=2.0.3",
+      "solid-js": ">=2.0.3",
     });
+    expect(pkg.devDependencies["@solidjs/vite-plugin"]).toBe(">=3.0.1");
+    expect(pkg.devDependencies["happy-dom"]).toBe(">=21.0.4");
+    expect(pkg.devDependencies["typescript"]).toBe(">=5.9.3");
     expect(Object.keys(pkg.devDependencies).sort()).toEqual([
       "@solidjs/vite-plugin",
       "@types/node",

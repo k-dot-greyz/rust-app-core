@@ -34,10 +34,10 @@ Agents pick this up from `agent-flow/references/cursor/rust-app-core.md`. That f
 
 ## Quickstart
 
-Rust **1.99.1** is pinned in `rust-toolchain.toml`. No crates.
+Rust **1.99.1** is the floor (`Cargo.toml` `rust-version`). `rust-toolchain.toml` tracks stable, and `scripts/rc-check.sh` refuses an older compiler. No crates.
 
 ```bash
-rustup toolchain install 1.99.1 --profile minimal --component rustfmt,clippy
+rustup toolchain install stable --profile minimal --component rustfmt,clippy
 rustup target add wasm32-unknown-unknown
 cargo test
 cargo run

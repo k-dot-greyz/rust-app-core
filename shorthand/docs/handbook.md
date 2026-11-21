@@ -46,7 +46,7 @@ The caution is the right default for a hull that already treats the network as h
 
 **Authored source is TypeScript.** `src/` is `.ts` and `.tsx` only, strict, `noEmit`, `verbatimModuleSyntax`. `tsc --noEmit` is the typecheck. Nothing in this repo is hand-written JavaScript.
 
-**The libraries publish compiled JavaScript plus `.d.ts`.** That is their build artifact. solid-js 2.0.0 ("The Long Hold", 17 Nov 2026) is written as TypeScript and shipped as `dist/solid.js` for the browser and `dist/server.js` for Node. We pin both direct runtime packages exact: `solid-js@2.0.3` and `@solidjs/web@2.0.3`.
+**The libraries publish compiled JavaScript plus `.d.ts`.** That is their build artifact. solid-js 2.0.0 ("The Long Hold", 17 Nov 2026) is written as TypeScript and shipped as `dist/solid.js` for the browser and `dist/server.js` for Node. We floor both direct runtime packages at `solid-js@2.0.3` and `@solidjs/web@2.0.3`. The lockfile records the resolution.
 
 **Their own dependencies, which we do not choose one by one:**
 
@@ -60,9 +60,9 @@ So a sandbox install downloads packages the page never fetches. That is real cos
 
 **The heavy tree is the toolchain.** On this machine `node_modules` is on the order of 100MB and about a hundred packages, dominated by TypeScript and the native bindings (rolldown, esbuild, the Solid compiler, lightningcss). Vite and Vitest are dev dependencies. They run at install, typecheck, test, and build. They are not a second copy of the app. pnpm is the installer because npm 10.9.9's arborist crashed resolving Vitest's peers (`edgesOut`).
 
-**What stays out.** Playwright, Astro, React, and a second component library. A browser-binary test runner would dominate install size for assertions the DOM test already makes. Astro waits on adapter @8. `happy-dom@21.0.4` is the one test DOM, pinned exact, dev only. It brings a short list of its own (including `ws`). That is the accepted extra, because "two islands share a store and one field paints" is a DOM claim. The store tests cannot see it.
+**What stays out.** Playwright, Astro, React, and a second component library. A browser-binary test runner would dominate install size for assertions the DOM test already makes. Astro waits on adapter @8. `happy-dom` is floored at 21.0.4. It is the one test DOM, dev only. It brings a short list of its own (including `ws`). That is the accepted extra, because "two islands share a store and one field paints" is a DOM claim. The store tests cannot see it.
 
-**Control we actually have.** Exact versions on the two runtime packages and on happy-dom. A lockfile for the rest. `tests/supply.test.ts` fails if a runtime dependency appears, if Playwright or Astro or React shows up in devDependencies, or if `src/` grows a `.js` file or a Solid 1 import. Review the lockfile diff when the toolchain moves. Do not `pnpm update` on a whim.
+**Control we actually have.** Floors on the direct packages. The lockfile records the resolution. `tests/supply.test.ts` fails if a runtime dependency appears, if Playwright or Astro or React shows up in devDependencies, or if `src/` grows a `.js` file or a Solid 1 import. Review the lockfile diff when the toolchain moves. Do not `pnpm update` on a whim.
 
 **Dev server bind.** `pnpm dev` and `pnpm preview` prefer `http://127.0.0.1:4483`. A busy port walks to the next free one. There is no TLS plugin. `HOST=0.0.0.0` is the opt-in for a sandbox that has to reach the machine. That opt-in has no login. The published site is the static build and does not run Vite.
 
