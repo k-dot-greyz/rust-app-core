@@ -4,6 +4,20 @@ Public reference template for a Rust web app core. The shell you run is called H
 
 Roast it. The vocabulary is closed on purpose, the dependency list is empty, and `SPEC.md` is the map of what shipped versus what is still a daydream. Issues and pull requests are the point.
 
+## Words
+
+Read this once. The rest of the repo uses the short names.
+
+- **Hull.** The Rust server in this repo. `cargo run` listens on `127.0.0.1:4471`.
+- **Card.** One JSON record. `kind` is a closed set: `hero`, `stat`, `list`, `form`, `note`, `gauge`, `media`.
+- **Pass.** The sample page: the deck of cards shipped in `modules/`.
+- **Plate.** One line you submit through the form on that page.
+- **Pipe.** A named JSON workflow. `ingress.pass` adds a plate. `ingress.trace` files a short note. `egress.probe` asks the airlock.
+- **Airlock.** The egress check. The default is deny.
+- **Dry dock.** A permit is recorded and `sent` stays false. Nothing leaves the machine.
+- **Deck.** The panel. **Pretext** is the same state as plain text (`?surface=pretext`), and it is also what remains if the panel paint throws.
+- **Shorthand.** The separate Solid 2 page in `shorthand/`. It does not talk to Hull.
+
 Agents pick this up from `agent-flow/references/cursor/rust-app-core.md`. That file is the copy that belongs on the dev-master instruction path.
 
 ## Quickstart
@@ -23,13 +37,21 @@ Open the pass, send a plate through `ingress.pass`, then knock on the airlock. T
 
 ## Run it
 
-The pass is at `http://127.0.0.1:4471`. `PORT` and `HOST` change the bind. `HULL_MODULES` points at the module directory (default `modules/`). Set `HULL_WATCH=0` to stop the file poll.
+The pass is at `http://127.0.0.1:4471`. That scheme is the right one: loopback never leaves the machine, and `http://127.0.0.1` is already a secure context. `PORT` and `HOST` change the bind. `PORT=0` asks the OS for a free port. If `4471` is already taken, the process does that on its own and prints the URL that opened. `HOST` defaults to `127.0.0.1`. `HOST=0.0.0.0` listens on every interface, with no login. `HULL_MODULES` points at the module directory (default `modules/`). Set `HULL_WATCH=0` to stop the file poll.
 
 ```bash
 cargo test
 ```
 
 Drop a card in `modules/cards`, a pipe in `modules/pipes`, and the dev server picks them up. A file that does not validate leaves the last good bundle up and shows a fault.
+
+## Schemes and ports
+
+A URL that names a host other than loopback is `https://`, unless it is an intentional denial fixture. The metadata probe and the plain-HTTP probe stay on `http://` so the airlock can refuse them. `modules/policy.json` sets `https_only: true`.
+
+Loopback dev servers stay `http://`. Do not add a TLS crate, and do not ship a self-signed certificate for someone to click through. The published host terminates TLS. `scripts/wasm-smoke.mjs` uses `https://hull.local/...` for that reason. Dispatch still reads only the path.
+
+Preferred ports stay uncommon and stable: hull `4471`, shorthand `4483`. They are not `3000`, `5173`, or `8080`. If the preferred port is taken, the process binds one the OS assigns and prints that URL.
 
 ## The shape
 
@@ -64,3 +86,7 @@ A cold start on the host plates a fresh service. The wasm instance keeps state u
 ## Modules
 
 Kinds are `hero`, `stat`, `list`, `form`, `note`, `gauge`, `media`. Steps are `append-list`, `inc-stat`, `set-gauge`, `airlock`. Both sets are closed and matched exhaustively. New behavior is a new file in that vocabulary, not a new interpreter.
+
+## Shorthand
+
+`shorthand/` is a Solid 2.0.3 candidate for the view `assets/island.js` hand-rolls. Same card kinds. The hull does not serve it, and `Cargo.toml` stays empty. `shorthand/CONTEXT.md` is the prompt. `shorthand/docs/handbook.md` is the companion. From that directory: `pnpm install`, `pnpm test`, `pnpm dev`. `pnpm dev` prefers `http://127.0.0.1:4483`. A busy port walks to the next free one, and Vite prints the URL that opened. `HOST=0.0.0.0` opens that dev server on every interface, with no login. That is a listening socket on the machine running Vite. The hull does not open outbound sockets. There is no TLS plugin.

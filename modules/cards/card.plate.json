@@ -9,14 +9,14 @@
     "fields": [
       {
         "name": "dish",
-        "label": "Dish",
+        "label": "Dish, plate title (48)",
         "type": "text",
         "required": true,
         "max": 48
       },
       {
         "name": "note",
-        "label": "Note",
+        "label": "Note, optional detail (80)",
         "type": "text",
         "required": false,
         "max": 80

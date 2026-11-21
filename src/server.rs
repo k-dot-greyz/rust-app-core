@@ -16,6 +16,18 @@ pub fn bind(addr: &str) -> std::io::Result<TcpListener> {
     TcpListener::bind(addr)
 }
 
+/// Bind `host:port`. Port `0`, or a port already taken, asks the OS for a free one.
+pub fn bind_preferred(host: &str, port: u16) -> std::io::Result<TcpListener> {
+    if port != 0 {
+        match TcpListener::bind(format!("{host}:{port}")) {
+            Ok(listener) => return Ok(listener),
+            Err(error) if error.kind() == std::io::ErrorKind::AddrInUse => {}
+            Err(error) => return Err(error),
+        }
+    }
+    TcpListener::bind(format!("{host}:0"))
+}
+
 pub fn serve(listener: TcpListener, hull: Arc<Mutex<Hull>>) {
     let slots = Arc::new(AtomicUsize::new(0));
     loop {

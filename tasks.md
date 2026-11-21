@@ -12,6 +12,8 @@ As a developer bootstrapping a hosted app, I want a shell that already has cards
 4. Run the four airlock probes and read four different verdicts.
 5. Fetch `/api/schema` and `/api/sync/handshake`.
 
+The Solid 2 shorthand in `shorthand/` is a sibling pass. It is not part of the done-when below.
+
 ## Done when
 
 - `cargo test` is green on Rust 1.99 with zero crates.

@@ -1,20 +1,20 @@
 import { dispatch } from "../lib/hull.mjs";
 
-const health = await dispatch(new Request("http://hull.local/api/health"));
+const health = await dispatch(new Request("https://hull.local/api/health"));
 const healthText = await health.text();
 if (health.status !== 200 || !healthText.includes("\"service\":\"hull\"")) {
   console.error("health failed", health.status, healthText);
   process.exit(1);
 }
 
-const page = await dispatch(new Request("http://hull.local/"));
+const page = await dispatch(new Request("https://hull.local/"));
 const html = await page.text();
 if (page.status !== 200 || !html.includes("The pass is open")) {
   console.error("page failed", page.status, html.slice(0, 200));
   process.exit(1);
 }
 
-const island = await dispatch(new Request("http://hull.local/assets/island.js"));
+const island = await dispatch(new Request("https://hull.local/assets/island.js"));
 const source = await island.text();
 if (
   island.status !== 200 ||
@@ -28,7 +28,7 @@ if (
   process.exit(1);
 }
 
-const plated = await dispatch(new Request("http://hull.local/api/pipes/ingress.pass/push", {
+const plated = await dispatch(new Request("https://hull.local/api/pipes/ingress.pass/push", {
   method: "POST",
   headers: { "content-type": "application/json", "x-airlock-intent": "1" },
   body: JSON.stringify({ dish: "omelette", note: "baveuse" }),
@@ -39,7 +39,7 @@ if (plated.status !== 200 || !platedText.includes("omelette")) {
   process.exit(1);
 }
 
-const probed = await dispatch(new Request("http://hull.local/api/pipes/egress.probe/push", {
+const probed = await dispatch(new Request("https://hull.local/api/pipes/egress.probe/push", {
   method: "POST",
   headers: { "content-type": "application/json", "x-airlock-intent": "1" },
   body: JSON.stringify({ probe: "metadata" }),

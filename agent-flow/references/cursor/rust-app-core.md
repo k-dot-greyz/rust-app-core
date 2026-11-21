@@ -2,7 +2,7 @@
 
 Reference toolkit for the Hull shell. Read this when the task is a Rust web app core, a hosted shell, pipes, cards, or an egress airlock. The binary is `hull`. The repository name is `rust-app-core`.
 
-Source of truth until a public GitHub remote exists: Origin repo `greyzxcursor/rust-web-scaffold`. Blueprint: `SPEC.md`. Human quickstart: `README.md`.
+Source of truth: GitHub `k-dot-greyz/rust-app-core`. Origin `greyzxcursor/rust-web-scaffold` is the earlier scaffold. Blueprint: `SPEC.md`. Human quickstart: `README.md`. The words Hull, pass, plate, pipe, airlock, dry dock, deck, pretext, and shorthand are defined there.
 
 ## Toolchain
 
@@ -21,7 +21,7 @@ cargo clippy --all-targets -- -D warnings
 cargo run
 ```
 
-The pass listens on `http://127.0.0.1:4471` unless `PORT` or `HOST` is set. `HULL_MODULES` overrides `modules/`. `HULL_WATCH=0` stops the file poll.
+The pass listens on `http://127.0.0.1:4471` unless `PORT` or `HOST` is set. `HOST` defaults to `127.0.0.1`. A taken `4471`, or `PORT=0`, binds a port the OS assigns and the process prints that URL. `HULL_MODULES` overrides `modules/`. `HULL_WATCH=0` stops the file poll.
 
 ## What you are allowed to extend
 
@@ -36,7 +36,9 @@ New behavior is a new file in the closed vocabulary, not a new crate and not an 
 
 ## What you do not do
 
-- Do not add a crate to get JSON, HTTP, or TLS.
+- Do not add a crate to get JSON, HTTP, or TLS. Do not ship a self-signed certificate, and do not tell a person to click through a browser warning.
+- Do not rewrite a denial fixture from `http://` to `https://`. The metadata probe and the plain-HTTP probe are the lesson. Every other non-loopback URL is `https://`.
+- Do not default the hull bind to `0.0.0.0`. That is an opt-in, and it has no login. Loopback dev servers stay `http://`.
 - Do not accept a visitor-supplied egress URL. Probes are `unlisted`, `metadata`, `plain-http`, `allowlisted`. Destinations live in `src/airlock.rs`.
 - Do not let an allowlist entry override hull class. Loopback, private, link-local, and metadata addresses stay denied.
 - Do not open an outbound socket. `dry_dock` records the permit and sets `sent` to false.
@@ -58,6 +60,10 @@ cargo build --release --target wasm32-unknown-unknown --lib
 cp target/wasm32-unknown-unknown/release/hull.wasm wasm/hull.wasm
 node scripts/wasm-smoke.mjs
 ```
+
+## Shorthand
+
+`shorthand/` is a Solid 2.0.3 candidate for the hand-rolled island. It is not loaded by the hull, it is not part of the hull done-when, it adds no crate, and it opens no socket. Read `shorthand/CONTEXT.md` before generating a deck in that style. `shorthand/docs/handbook.md` holds the pins and the supply-chain split. Leave `astro add solid` alone until `@astrojs/solid-js@8` is what the resolver installs. This hull has no card inheritance and no held async read. Do not add either because an older prompt mentioned them.
 
 ## Checks before you call it done
 

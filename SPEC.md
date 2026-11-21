@@ -2,6 +2,10 @@
 
 Rust 1.99.1. `Cargo.toml` has an empty `[dependencies]`. This file is the contract the tree has to match. Cards, pipes, and policy are JSON under `modules/`. The page is server-rendered. `assets/island.js` only applies a view the server already computed.
 
+## Words
+
+Hull is the Rust server. A card is one JSON record, and `kind` is the closed set below. The pass is the sample page in `modules/`. A plate is one line submitted through the form. A pipe is a named JSON workflow: `ingress.pass` adds a plate, `ingress.trace` files a short note, `egress.probe` asks the airlock. The airlock is the egress check, and the default is deny. The dry dock records a permit and leaves `sent` false. The deck is the panel. Pretext is that same state as plain text. The shorthand in `shorthand/` is a separate Solid 2 candidate. The hull does not serve it, and it is not part of the done-when in `tasks.md`.
+
 ## Contract
 
 Closed kinds, matched in `src/schema.rs`: `hero`, `stat`, `list`, `form`, `note`, `gauge`, `media`.
@@ -47,8 +51,10 @@ Inbound HTTP/1.1 on the standard library, one request per connection, `Content-L
 
 Two ports, one dispatch:
 
-- Local: `cargo run` binds `TcpListener` in `src/server.rs`. Default port **4471**.
-- Hosted: `app/[[...path]]/route.js` loads `wasm/hull.wasm` through `lib/hull.mjs` and calls `hull_handle`. Next is the port. The crate is the product. One wasm instance per isolate; a cold start plates a fresh service.
+- Local: `cargo run` binds `TcpListener` in `src/server.rs`. Preferred port **4471**, on `127.0.0.1`. The scheme is `http` because the bytes stay on the machine. A taken port, or `PORT=0`, binds a port the OS assigns and the process prints that URL. `HOST=0.0.0.0` is the opt-in that listens on every interface, with no login.
+- Hosted: `app/[[...path]]/route.js` loads `wasm/hull.wasm` through `lib/hull.mjs` and calls `hull_handle`. The host terminates TLS. Smoke requests use `https://hull.local`. Dispatch reads the path, not the scheme. Next is the port. The crate is the product. One wasm instance per isolate; a cold start plates a fresh service.
+
+A URL that is not loopback is `https://`, except the denial fixtures in the probe table above. Do not add a TLS crate. Do not ship a self-signed certificate. The shorthand prefers port **4483** and walks forward when that port is taken. It does not terminate TLS either.
 
 ## Sample pass
 
@@ -123,4 +129,4 @@ Done in the tree before this revision: night canvas and skip link, deck and pret
 
 This change: a deck paint that throws switches to pretext, shows `#client-fault`, and records an ablation trace; a failed view poll keeps the last good view, records one trace line, and retries on a capped backoff; a media error shows the plate, retries one same-origin asset, then stays there. The reload path is not loosened. `night_shift_never_falls_back_to_a_white_canvas` still rejects a white background, `#fff`, `#ffffff`, and `color-scheme: light`.
 
-Later, and not in this tree: no light theme, no outbound socket, no visitor-supplied URL, no second business logic in JavaScript.
+Later, and not in this tree: no light theme, no outbound socket, no visitor-supplied URL, no second business logic in JavaScript. The shorthand stays a candidate beside the hull. Replacing `assets/island.js` with it is not this contract.

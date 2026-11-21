@@ -28,3 +28,19 @@ fn tcp_health_answers() {
     assert!(text.contains("\"service\":\"hull\""), "{text}");
     assert!(text.contains("nosniff"), "{text}");
 }
+
+#[test]
+fn a_taken_port_falls_back_to_one_the_os_assigns() {
+    let held = server::bind("127.0.0.1:0").unwrap();
+    let taken = held.local_addr().unwrap().port();
+    let fallback = server::bind_preferred("127.0.0.1", taken).unwrap();
+    let assigned = fallback.local_addr().unwrap().port();
+    assert_ne!(assigned, 0);
+    assert_ne!(assigned, taken);
+}
+
+#[test]
+fn port_zero_asks_the_os() {
+    let listener = server::bind_preferred("127.0.0.1", 0).unwrap();
+    assert_ne!(listener.local_addr().unwrap().port(), 0);
+}
