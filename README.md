@@ -105,7 +105,7 @@ Kinds are `hero`, `stat`, `list`, `form`, `note`, `gauge`, `media`. Steps are `a
 
 ## Release check
 
-`scripts/rc-check.sh` runs `cargo test`, then `pnpm test` and `pnpm typecheck` in `shorthand/`. `cargo test` stays the Rust suite and does not call Node. The hull does not serve the shorthand, and `assets/island.js` stays the view on the pass. That is the release candidate: a pure Rust core, with the Solid 2 deck as the island candidate beside it.
+`scripts/rc-check.sh` runs `cargo test`, then `pnpm test` and `pnpm typecheck` in `shorthand/`. `cargo test` stays the Rust suite and does not call Node. GitHub runs that script on pull requests and on `main` (`.github/workflows/rc.yml`). The hull does not serve the shorthand, and `assets/island.js` stays the view on the pass. That is the release candidate: a pure Rust core, with the Solid 2 deck as the island candidate beside it.
 
 The reference is this repository. `https://rust-core-app-test-solid2.apps.grok.bot` is an earlier snapshot. This candidate does not republish that page.
 
